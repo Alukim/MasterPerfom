@@ -1,5 +1,4 @@
 ﻿using Elasticsearch.Net;
-using MasterPerform.Infrastructure.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -11,13 +10,6 @@ namespace MasterPerform.Infrastructure.ElasticSearch
 {
     public static class ElasticSearchBootstrapExtensions
     {
-        public static IServiceCollection AddIndexName<TIndex>(this IServiceCollection serviceCollection, string indexName)
-            where TIndex : IEntity
-        {
-            return serviceCollection
-                .AddSingleton(x => new IndexNameProvider<TIndex>(indexName));
-        }
-
         public static IServiceCollection AddElasticsearchSettings(this IServiceCollection services, IConfiguration config)
         {
             return services
@@ -25,13 +17,14 @@ namespace MasterPerform.Infrastructure.ElasticSearch
         }
 
         public static IServiceCollection AddElasticSearchConnection(this IServiceCollection services,
-            IConfiguration configuration,
+            IConfiguration configuration, string defaultIndexName,
             Func<IServiceProvider, ConnectionSettings, ConnectionSettings> externalConfigurations = null)
         {
 
             services.AddElasticsearchSettings(configuration);
 
             services.AddSingleton<IElasticClient>(sp => new ElasticClient(sp.GetService<ConnectionSettings>()));
+            services.AddSingleton(sp => new IndexNameResolver(sp.GetRequiredService<ConnectionSettings>()));
 
             services.AddSingleton(sp =>
             {
@@ -43,10 +36,11 @@ namespace MasterPerform.Infrastructure.ElasticSearch
                 var connectionSettings = new ConnectionSettings(
                         pool,
                         connection,
-                        JsonNetSerializer.Default)
+                        sourceSerializer: JsonNetSerializer.Default)
                     .DisableDirectStreaming()
                     .PrettyJson()
-                    .ThrowExceptions(true);
+                    .ThrowExceptions(true)
+                    .DefaultIndex(defaultIndexName);
 
                 if (externalConfigurations != null)
                     connectionSettings = externalConfigurations(sp, connectionSettings);
