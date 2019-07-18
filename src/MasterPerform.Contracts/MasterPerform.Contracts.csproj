@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>F:\Projects\Study\MasterPerform\MasterPerfom\MasterPerform.Contracts\MasterPerform.Contracts.xml</DocumentationFile>
+    <DocumentationFile>MasterPerform.Contracts.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj" />
+    <ProjectReference Include="..\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

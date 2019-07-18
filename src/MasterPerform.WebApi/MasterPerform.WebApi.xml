@@ -29,6 +29,25 @@
             </summary>
             <returns>IActionResult.</returns>
         </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetDocument(MasterPerform.Contracts.Queries.GetDocument)">
+            <summary>
+            
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentDetails">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:MasterPerform.WebApi.Program">
             <summary>
             Main class of program.
@@ -68,6 +87,17 @@
             </summary>
             <param name="app">Application builder.</param>
             <param name="env">Host.</param>
+        </member>
+        <member name="T:MasterPerform.WebApi.Utilities.Attributes.MasterPerformRoute">
+            <summary>
+            Default route attribute.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.WebApi.Utilities.Attributes.MasterPerformRoute.#ctor(System.String)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="template">Route template.</param>
         </member>
     </members>
 </doc>

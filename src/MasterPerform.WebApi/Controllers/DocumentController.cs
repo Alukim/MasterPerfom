@@ -32,7 +32,7 @@ namespace MasterPerform.WebApi.Controllers
         /// Create document operation.
         /// </summary>
         /// <param name="command">Create document command.</param>
-        /// <returns>IActionResult.</returns>
+        /// <returns>HTTP 201 with location header.</returns>
         [HttpPost(Name = "DocumentDetails.Create")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> CreateDocument([FromBody] CreateDocument command)
@@ -42,29 +42,42 @@ namespace MasterPerform.WebApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get list of documents.
         /// </summary>
-        /// <returns>IActionResult.</returns>
+        /// <returns>Collection of DocumentResponse.</returns>
         [HttpGet(Name = "DocumentDetails.GetList")]
         [ProducesResponseType(typeof(IReadOnlyCollection<DocumentResponse>), 200)]
         public Task<IReadOnlyCollection<DocumentResponse>> GetList([FromQuery] GetDocuments query)
             => _commandQueryProvider.SendAsync(query);
 
+        /// <summary>
+        /// Get document by id.
+        /// </summary>
+        /// <param name="query">GetDocument class.</param>
+        /// <returns>DocumentResponse</returns>
         [HttpGet("{documentId}", Name = "DocumentDetails.GetDocument")]
         [ProducesResponseType(typeof(DocumentResponse), 200)]
         public Task<DocumentResponse> GetDocument([FromRoute] GetDocument query)
             => _commandQueryProvider.SendAsync(query);
 
+        /// <summary>
+        /// Update document details operation.
+        /// </summary>
+        /// <returns>HTTP 204</returns>
         [HttpPatch("{documentId}/details", Name = "DocumentDetails.UpdateDetails")]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> UpdateDocumentDetails()
+        public Task<IActionResult> UpdateDocumentDetails()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Update addresses operation
+        /// </summary>
+        /// <returns>HTTP 204</returns>
         [HttpPut("{documentId}/addresses", Name = "DocumentDetails.UpdateAddresses")]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> UpdateDocumentAddresses()
+        public Task<IActionResult> UpdateDocumentAddresses()
         {
             throw new NotImplementedException();
         }

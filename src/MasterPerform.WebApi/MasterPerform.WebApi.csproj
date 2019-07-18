@@ -5,20 +5,13 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>F:\Projects\Study\MasterPerform\MasterPerfom\src\MasterPerform.WebApi\MasterPerform.WebApi.xml</DocumentationFile>
+      <DocumentationFile>MasterPerform.WebApi.xml</DocumentationFile>
       <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="wwwroot\**" />
-      <Content Remove="wwwroot\**" />
-      <EmbeddedResource Remove="wwwroot\**" />
-      <None Remove="wwwroot\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\MasterPerform.Contracts\MasterPerform.Contracts.csproj" />
-        <ProjectReference Include="..\..\MasterPerform\MasterPerform.csproj" />
+        <ProjectReference Include="..\MasterPerform.Contracts\MasterPerform.Contracts.csproj" />
+        <ProjectReference Include="..\MasterPerform\MasterPerform.csproj" />
         <ProjectReference Include="..\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj" />
     </ItemGroup>
 
