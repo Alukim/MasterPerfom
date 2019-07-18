@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using MasterPerform.Infrastructure.Messaging.Contracts;
+﻿using MasterPerform.Infrastructure.Messaging.Contracts;
+using System.Threading.Tasks;
 
 namespace MasterPerform.Infrastructure.Messaging.Handlers
 {
     public interface ICommandHandler<TCommand>
         where TCommand : ICommand
     {
-        Task Handler(TCommand command);
+        Task HandleAsync(TCommand command);
     }
 }

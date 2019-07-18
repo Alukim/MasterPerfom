@@ -1,13 +1,13 @@
-﻿using MasterPerform.Infrastructure.Bootstrap;
+﻿using MasterPerform.Entities;
+using MasterPerform.Infrastructure.Bootstrap;
+using MasterPerform.Infrastructure.Elasticsearch;
 using MasterPerform.Infrastructure.ElasticSearch;
 using MasterPerform.Infrastructure.Messaging;
-using MasterPerform.WebApi.Contracts;
-using MasterPerform.WebApi.Domain.Handlers;
-using MasterPerform.WebApi.Domain.Mapping;
+using MasterPerform.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace MasterPerform.WebApi.Domain
+namespace MasterPerform
 {
     public class MasterPerformBootstrap : MicroserviceBootstrap
     {
@@ -16,6 +16,13 @@ namespace MasterPerform.WebApi.Domain
         public MasterPerformBootstrap(IServiceCollection serviceCollection) : base(serviceCollection)
         {
             RegisterIndexInitializer(serviceCollection);
+            RegisterCommandHandlers(serviceCollection);
+            RegisterRepositories(serviceCollection);
+        }
+
+        public static void RegisterRepositories(IServiceCollection serviceCollection)
+        {
+            serviceCollection.RegisterElasticsearchRepositoryFor<Document>();
         }
 
         private static void RegisterIndexInitializer(IServiceCollection serviceCollection)
@@ -23,9 +30,9 @@ namespace MasterPerform.WebApi.Domain
             serviceCollection.AddScoped<IIndexInitializer, MasterPerformIndexInitializer>();
         }
 
-        protected override void RegisterCommandHandlers(IServiceCollection serviceCollection)
+        protected void RegisterCommandHandlers(IServiceCollection serviceCollection)
         {
-            serviceCollection.RegisterCommandHandler<CreateDocument, CreateDocumentCommandHandler>();
+            serviceCollection.RegisterAllCommandHandlersFromAssemblyContaining<MasterPerformBootstrap>();
         }
 
         public override void Run(IServiceProvider serviceProvider)

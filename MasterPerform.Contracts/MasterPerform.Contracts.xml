@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MasterPerform.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:MasterPerform.Contracts.Entities.Address">
+            <summary>
+            Representation of address.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Entities.Address.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="addressLine">Address line.</param>
+            <param name="city">City.</param>
+            <param name="state">State.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.Address.AddressLine">
+            <summary>
+            Address line.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.Address.City">
+            <summary>
+            City.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.Address.State">
+            <summary>
+            State.
+            </summary>
+        </member>
+    </members>
+</doc>

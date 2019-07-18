@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MasterPerform.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:MasterPerform.WebApi.Controllers.DocumentController">
+            <inheritdoc />
+            <summary>
+            Controller used to manage document data.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.#ctor(MasterPerform.Infrastructure.Messaging.ICommandQueryProvider)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="_commandQueryProvider">Command query provider.</param>
+        </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.CreateDocument(MasterPerform.Contracts.Commands.CreateDocument)">
+            <summary>
+            Create document operation.
+            </summary>
+            <param name="command">Create document command.</param>
+            <returns>IActionResult.</returns>
+        </member>
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetList(MasterPerform.Contracts.Queries.GetDocuments)">
+            <summary>
+            
+            </summary>
+            <returns>IActionResult.</returns>
+        </member>
+        <member name="T:MasterPerform.WebApi.Program">
+            <summary>
+            Main class of program.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.WebApi.Program.Main(System.String[])">
+            <summary>
+            Main method that will start program.
+            </summary>
+            <param name="args">Arguments to starting application.</param>
+        </member>
+        <member name="T:MasterPerform.WebApi.Startup">
+            <summary>
+            WebApi startup class.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.WebApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="configuration">Configuration manager.</param>
+        </member>
+        <member name="P:MasterPerform.WebApi.Startup.Configuration">
+            <summary>
+            Configuration manager.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.WebApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Method allow to configure DI services.
+            </summary>
+            <param name="services">DI services container.</param>
+        </member>
+        <member name="M:MasterPerform.WebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Method allow to configure application (hosting, logger, etc.)
+            </summary>
+            <param name="app">Application builder.</param>
+            <param name="env">Host.</param>
+        </member>
+    </members>
+</doc>

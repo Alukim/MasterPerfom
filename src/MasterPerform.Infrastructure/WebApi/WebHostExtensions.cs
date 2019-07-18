@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -10,7 +12,7 @@ namespace MasterPerform.Infrastructure.WebApi
     {
         public static void BuildAndRunWebHost<TStartup>() where TStartup : class
         {
-            // Initialize startup logger, to log errors
+            CreateLogger();
 
             if (BuildConstants.IsDebug)
             {
@@ -19,22 +21,21 @@ namespace MasterPerform.Infrastructure.WebApi
 
             try
             {
-                BuildWebHost<TStartup>();
+                BuildWebHost<TStartup>().Run();
             }
             catch (Exception ex)
             {
-                // Add Logger
-                Console.WriteLine($"Host terminated unexpectedly: {ex.Message}");
+                Log.Fatal(ex, "Host terminated unexpectedly: {0}", ex.Message);
                 throw;
             }
             finally
             {
-                // flush logger
+                Log.CloseAndFlush();
             }
         }
 
-        public static IWebHost BuildWebHost<TStartup>() where TStartup : class =>
-            CreatePreconfiguredWebHostBuilder<TStartup>().Build();
+        public static IWebHost BuildWebHost<TStartup>() where TStartup : class
+            => CreatePreconfiguredWebHostBuilder<TStartup>().Build();
 
         public static IWebHostBuilder CreatePreconfiguredWebHostBuilder<TStartup>() where TStartup : class
         {
@@ -42,7 +43,8 @@ namespace MasterPerform.Infrastructure.WebApi
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration(ConfigureConfigurationSources)
-                .UseDefaultServiceProvider((context, options) => { options.ValidateScopes = true; })
+                .UseDefaultServiceProvider((context, options) => { options.ValidateScopes = BuildConstants.IsDebug; })
+                .UseSerilog()
                 .UseStartup<TStartup>();
         }
 
@@ -54,6 +56,17 @@ namespace MasterPerform.Infrastructure.WebApi
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                 .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: false)
                 .AddEnvironmentVariables();
+        }
+
+        private static void CreateLogger()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .MinimumLevel.Verbose()
+                .WriteTo.ColoredConsole(
+                    LogEventLevel.Debug,
+                    "{NewLine}{Timestamp:HH:mm:ss} [{Level}] ({CorrelationToken}) {Message}{NewLine}{Exception}")
+                .CreateLogger();
         }
     }
 }

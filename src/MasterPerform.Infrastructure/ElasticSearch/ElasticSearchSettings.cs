@@ -1,6 +1,6 @@
-﻿namespace MasterPerform.Infrastructure.ElasticSearch
+﻿namespace MasterPerform.Infrastructure.Elasticsearch
 {
-    public class ElasticSearchSettings
+    public class ElasticsearchSettings
     {
         public string NodeUrl { get; set; }
 

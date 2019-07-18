@@ -6,21 +6,20 @@ using Nest;
 using Nest.JsonNetSerializer;
 using System;
 
-namespace MasterPerform.Infrastructure.ElasticSearch
+namespace MasterPerform.Infrastructure.Elasticsearch
 {
-    public static class ElasticSearchBootstrapExtensions
+    public static class ElasticsearchBootstrapExtensions
     {
         public static IServiceCollection AddElasticsearchSettings(this IServiceCollection services, IConfiguration config)
         {
             return services
-                .Configure<ElasticSearchSettings>(x => config.GetSection(nameof(ElasticSearchSettings)));
+                .Configure<ElasticsearchSettings>(x => config.GetSection(nameof(ElasticsearchSettings)).Bind(x));
         }
 
         public static IServiceCollection AddElasticSearchConnection(this IServiceCollection services,
             IConfiguration configuration, string defaultIndexName,
             Func<IServiceProvider, ConnectionSettings, ConnectionSettings> externalConfigurations = null)
         {
-
             services.AddElasticsearchSettings(configuration);
 
             services.AddSingleton<IElasticClient>(sp => new ElasticClient(sp.GetService<ConnectionSettings>()));
@@ -28,7 +27,7 @@ namespace MasterPerform.Infrastructure.ElasticSearch
 
             services.AddSingleton(sp =>
             {
-                var esSettings = sp.GetService<IOptions<ElasticSearchSettings>>().Value;
+                var esSettings = sp.GetService<IOptions<ElasticsearchSettings>>().Value;
                 var node = new Uri(esSettings.NodeUrl);
                 var pool = new SingleNodeConnectionPool(node);
                 var connection = new HttpConnection();

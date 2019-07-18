@@ -5,7 +5,13 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.WebApi", "src\MasterPerform.WebApi\MasterPerform.WebApi.csproj", "{667BF6BD-F599-460B-9E17-99B7E4F542AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterPerform.Infrastructure", "src\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj", "{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Infrastructure", "src\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj", "{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Infrastructure.Tests", "MasterPerform.Infrastructure.Tests\MasterPerform.Infrastructure.Tests.csproj", "{FFB50145-4BAA-4F33-A31C-CA6476866763}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Contracts", "MasterPerform.Contracts\MasterPerform.Contracts.csproj", "{E1AF15D7-D1E0-4369-B11F-2D620432C21A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterPerform", "MasterPerform\MasterPerform.csproj", "{068E9FDC-A305-405E-825F-32E3937DC3AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB50145-4BAA-4F33-A31C-CA6476866763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB50145-4BAA-4F33-A31C-CA6476866763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB50145-4BAA-4F33-A31C-CA6476866763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB50145-4BAA-4F33-A31C-CA6476866763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1AF15D7-D1E0-4369-B11F-2D620432C21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1AF15D7-D1E0-4369-B11F-2D620432C21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1AF15D7-D1E0-4369-B11F-2D620432C21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1AF15D7-D1E0-4369-B11F-2D620432C21A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{068E9FDC-A305-405E-825F-32E3937DC3AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068E9FDC-A305-405E-825F-32E3937DC3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068E9FDC-A305-405E-825F-32E3937DC3AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068E9FDC-A305-405E-825F-32E3937DC3AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,7 +16,7 @@ namespace MasterPerform.Infrastructure.Bootstrap
             }
             catch (TargetInvocationException e)
             {
-                throw e.InnerException;
+                throw;
             }
 
             return services.AddSingleton<IMicroserviceBootstrap>(microserviceBootstrap);
