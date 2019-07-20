@@ -24,9 +24,7 @@ namespace MasterPerform.WebApi.Controllers
         /// </summary>
         /// <param name="_commandQueryProvider">Command query provider.</param>
         public DocumentController(ICommandQueryProvider _commandQueryProvider)
-        {
-            this._commandQueryProvider = _commandQueryProvider;
-        }
+            => this._commandQueryProvider = _commandQueryProvider;
 
         /// <summary>
         /// Create document operation.
@@ -47,8 +45,14 @@ namespace MasterPerform.WebApi.Controllers
         /// <returns>Collection of DocumentResponse.</returns>
         [HttpGet(Name = "DocumentDetails.GetList")]
         [ProducesResponseType(typeof(IReadOnlyCollection<DocumentResponse>), 200)]
-        public Task<IReadOnlyCollection<DocumentResponse>> GetList([FromQuery] GetDocuments query)
-            => _commandQueryProvider.SendAsync(query);
+        public Task<IReadOnlyCollection<DocumentResponse>> GetList([FromQuery] string query, int pageSize, int pageNumber)
+        {
+            var getDocuments = new GetDocuments(
+                query: query,
+                pageSize: pageSize,
+                pageNumber: pageNumber);
+            return _commandQueryProvider.SendAsync(getDocuments);
+        }
 
         /// <summary>
         /// Get document by id.
@@ -66,9 +70,10 @@ namespace MasterPerform.WebApi.Controllers
         /// <returns>HTTP 204</returns>
         [HttpPatch("{documentId}/details", Name = "DocumentDetails.UpdateDetails")]
         [ProducesResponseType(204)]
-        public Task<IActionResult> UpdateDocumentDetails()
+        public async Task<IActionResult> UpdateDocumentDetails([FromBody] UpdateDocumentDetails command)
         {
-            throw new NotImplementedException();
+            await _commandQueryProvider.SendAsync(command);
+            return NoContent();
         }
 
         /// <summary>

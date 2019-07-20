@@ -21,32 +21,32 @@
             Create document operation.
             </summary>
             <param name="command">Create document command.</param>
-            <returns>IActionResult.</returns>
+            <returns>HTTP 201 with location header.</returns>
         </member>
         <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetList(MasterPerform.Contracts.Queries.GetDocuments)">
             <summary>
-            
+            Get list of documents.
             </summary>
-            <returns>IActionResult.</returns>
+            <returns>Collection of DocumentResponse.</returns>
         </member>
         <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetDocument(MasterPerform.Contracts.Queries.GetDocument)">
             <summary>
-            
+            Get document by id.
             </summary>
-            <param name="query"></param>
-            <returns></returns>
+            <param name="query">GetDocument class.</param>
+            <returns>DocumentResponse</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentDetails">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentDetails(MasterPerform.Contracts.Commands.UpdateDocumentDetails)">
             <summary>
-            
+            Update document details operation.
             </summary>
-            <returns></returns>
+            <returns>HTTP 204</returns>
         </member>
         <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses">
             <summary>
-            
+            Update addresses operation
             </summary>
-            <returns></returns>
+            <returns>HTTP 204</returns>
         </member>
         <member name="T:MasterPerform.WebApi.Program">
             <summary>

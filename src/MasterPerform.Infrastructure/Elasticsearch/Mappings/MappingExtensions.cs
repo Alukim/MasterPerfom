@@ -14,6 +14,13 @@ namespace MasterPerform.Infrastructure.Elasticsearch.Mappings
             return descriptor.Properties(p => p.Keyword(s => s.Name(field).Index(false)));
         }
 
+        public static TypeMappingDescriptor<TObject> MapKeyword<TObject>(
+            this TypeMappingDescriptor<TObject> descriptor, Expression<Func<TObject, object>> field)
+            where TObject : class
+        {
+            return descriptor.Properties(p => p.Keyword(s => s.Name(field).Index(true)));
+        }
+
         public static PropertiesDescriptor<TObject> AddExactMatchField<TObject>(
             this PropertiesDescriptor<TObject> descriptor,
             string normalizer = CustomNormalizers.KEYWORD_LOWERCASE)

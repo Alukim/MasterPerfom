@@ -13,6 +13,7 @@ namespace MasterPerform.Mapping.Extensions
     => mappingsDescriptor
         .AutoMap()
         .MapKeywordNonIndexed(z => z.Id)
+        .MapKeyword(z => z.SimilarDocument)
         .Properties(p => p
             .Object<DocumentDetails>(pp => pp
                 .Name(z => z.Details)
@@ -30,14 +31,6 @@ namespace MasterPerform.Mapping.Extensions
                     .MapTextWithMatchingFields(zz => zz.State)
                 ))
         );
-
-        public static TypeMappingDescriptor<TObject> MapTextWithMatchingFields<TObject>(
-            this TypeMappingDescriptor<TObject> descriptor,
-            Expression<Func<TObject, object>> field)
-            where TObject : class
-        {
-            return descriptor.Properties(p => p.MapTextWithMatchingFields(field));
-        }
 
         public static PropertiesDescriptor<TObject> MapTextWithMatchingFields<TObject>(
             this PropertiesDescriptor<TObject> descriptor,

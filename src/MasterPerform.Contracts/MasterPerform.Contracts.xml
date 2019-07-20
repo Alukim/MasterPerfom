@@ -4,6 +4,28 @@
         <name>MasterPerform.Contracts</name>
     </assembly>
     <members>
+        <member name="T:MasterPerform.Contracts.Commands.UpdateDocumentDetails">
+            <summary>
+            Command used to update document details.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Commands.UpdateDocumentDetails.#ctor(System.Guid,MasterPerform.Contracts.Entities.DocumentDetails)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="documentId">Document id.</param>
+            <param name="details">Document details.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.UpdateDocumentDetails.DocumentId">
+            <summary>
+            Id of document.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.UpdateDocumentDetails.Details">
+            <summary>
+            Document details.
+            </summary>
+        </member>
         <member name="T:MasterPerform.Contracts.Entities.Address">
             <summary>
             Representation of address.
@@ -30,6 +52,40 @@
         <member name="P:MasterPerform.Contracts.Entities.Address.State">
             <summary>
             State.
+            </summary>
+        </member>
+        <member name="T:MasterPerform.Contracts.Entities.DocumentDetails">
+            <summary>
+            Representation of Document details.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Entities.DocumentDetails.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="firstName">First name.</param>
+            <param name="lastName">Last name.</param>
+            <param name="email">Email.</param>
+            <param name="phone">Phone number.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.DocumentDetails.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.DocumentDetails.LastName">
+            <summary>
+            Last name.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.DocumentDetails.Email">
+            <summary>
+            Email.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Entities.DocumentDetails.Phone">
+            <summary>
+            Phone number.
             </summary>
         </member>
     </members>

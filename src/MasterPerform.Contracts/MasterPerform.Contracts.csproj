@@ -12,4 +12,10 @@
     <ProjectReference Include="..\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="MasterPerform.Contracts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

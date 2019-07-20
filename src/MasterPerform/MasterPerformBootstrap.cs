@@ -33,6 +33,7 @@ namespace MasterPerform
         protected void RegisterCommandHandlers(IServiceCollection serviceCollection)
         {
             serviceCollection.RegisterAllCommandHandlersFromAssemblyContaining<MasterPerformBootstrap>();
+            serviceCollection.RegisterAllQueryHandlersFromAssemblyContaining<MasterPerformBootstrap>();
         }
 
         public override void Run(IServiceProvider serviceProvider)

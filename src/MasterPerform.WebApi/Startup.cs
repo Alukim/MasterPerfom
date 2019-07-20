@@ -53,7 +53,7 @@ namespace MasterPerform.WebApi
         {
             app.UseMvc()
                 .UseMiddleware<ExceptionMiddleware>()
-                .UseSwagger()
+                .UseSwaggerCore()
                 .ApplicationServices.UseModule();
         }
     }

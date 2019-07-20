@@ -37,7 +37,7 @@ namespace MasterPerform.Infrastructure.Swagger
             return serviceCollection;
         }
 
-        public static IApplicationBuilder UseSwagger(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSwaggerCore(this IApplicationBuilder app)
         {
             app.UseSwagger();
             app.UseSwaggerUI(z =>
