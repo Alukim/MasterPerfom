@@ -3,6 +3,9 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace MasterPerform.WebApi.Utilities.Swagger
 {
+    /// <summary>
+    /// Implementation of swagger configuration.
+    /// </summary>
     internal class SwaggerConfiguration : ISwaggerConfiguration
     {
         public Info SwaggerInfo => new Info

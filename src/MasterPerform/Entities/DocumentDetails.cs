@@ -2,6 +2,10 @@
 {
     public class DocumentDetails
     {
+        public DocumentDetails()
+        {
+        }
+
         public DocumentDetails(string firstName, string lastName, string email, string phone)
         {
             FirstName = firstName;
@@ -10,12 +14,12 @@
             Phone = phone;
         }
 
-        public string FirstName { get; }
+        public string FirstName { get; set; }
 
-        public string LastName { get; }
+        public string LastName { get; set; }
 
-        public string Email { get; }
+        public string Email { get; set; }
 
-        public string Phone { get; }
+        public string Phone { get; set; }
     }
 }

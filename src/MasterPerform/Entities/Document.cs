@@ -10,6 +10,10 @@ namespace MasterPerform.Entities
         IEntity,
         ICreateDocumentPart
     {
+        public Document()
+        {
+        }
+
         public Document(Guid id, DocumentDetails details, IReadOnlyCollection<Address> addresses, Guid? similarDocument)
         {
             Id = id;
@@ -18,13 +22,13 @@ namespace MasterPerform.Entities
             SimilarDocument = similarDocument;
         }
 
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
-        public DocumentDetails Details { get; }
+        public DocumentDetails Details { get; set; }
 
-        public IReadOnlyCollection<Address> Addresses { get; }
+        public IReadOnlyCollection<Address> Addresses { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Include)]
-        public Guid? SimilarDocument { get; }
+        public Guid? SimilarDocument { get; set; }
     }
 }

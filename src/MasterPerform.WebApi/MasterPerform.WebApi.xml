@@ -23,7 +23,7 @@
             <param name="command">Create document command.</param>
             <returns>HTTP 201 with location header.</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetList(MasterPerform.Contracts.Queries.GetDocuments)">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetList(System.String,System.Int32,System.Int32)">
             <summary>
             Get list of documents.
             </summary>
@@ -42,7 +42,7 @@
             </summary>
             <returns>HTTP 204</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses(MasterPerform.Contracts.Commands.UpdateDocumentAddresses)">
             <summary>
             Update addresses operation
             </summary>
@@ -98,6 +98,11 @@
             Default constructor.
             </summary>
             <param name="template">Route template.</param>
+        </member>
+        <member name="T:MasterPerform.WebApi.Utilities.Swagger.SwaggerConfiguration">
+            <summary>
+            Implementation of swagger configuration.
+            </summary>
         </member>
     </members>
 </doc>

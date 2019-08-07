@@ -6,36 +6,29 @@ using System.Collections.Generic;
 namespace MasterPerform.Contracts.Commands
 {
     /// <summary>
-    /// Command used to create new document.
+    /// Command used to update document addresses.
     /// </summary>
-    public class CreateDocument : ICreateCommand
+    public class UpdateDocumentAddresses : ICommand
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="documentDetails">Document details.</param>
+        /// <param name="documentId">Document id.</param>
         /// <param name="addresses">Document addresses.</param>
-        public CreateDocument(
-            DocumentDetails documentDetails,
-            IReadOnlyCollection<Address> addresses)
+        public UpdateDocumentAddresses(Guid documentId, IReadOnlyCollection<Address> addresses)
         {
-            DocumentDetails = documentDetails;
+            DocumentId = documentId;
             Addresses = addresses;
         }
 
         /// <summary>
-        /// Document details.
+        /// Id of document.
         /// </summary>
-        public DocumentDetails DocumentDetails { get; }
+        public Guid DocumentId { get; }
 
         /// <summary>
         /// Document addresses.
         /// </summary>
         public IReadOnlyCollection<Address> Addresses { get; }
-
-        /// <summary>
-        /// Id of newly created id.
-        /// </summary>
-        public Guid CreatedId { get; set; }
     }
 }

@@ -14,5 +14,10 @@ namespace MasterPerform.Infrastructure.Elasticsearch.Mappings.Descriptors
             => descriptor.Custom(CustomAnalyzers.KEYWORD_LOWERCASE, zz => zz
                 .Tokenizer(CustomTokenizers.KEYWORD)
                 .Filters(CustomFilters.LOWERCASE));
+
+        public static AnalyzersDescriptor NGram(this AnalyzersDescriptor descriptor)
+            => descriptor.Custom(CustomAnalyzers.NGRAM_ANALYZER, zz => zz
+                .Tokenizer(CustomTokenizers.NGRAM)
+                .Filters(CustomFilters.ASCIIFOLDING, CustomFilters.LOWERCASE));
     }
 }

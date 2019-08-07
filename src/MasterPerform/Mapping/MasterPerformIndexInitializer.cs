@@ -6,6 +6,7 @@ using MasterPerform.Mapping.Extensions;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
+using MasterPerform.Infrastructure.Elasticsearch.Mappings;
 
 namespace MasterPerform.Mapping
 {
@@ -15,10 +16,10 @@ namespace MasterPerform.Mapping
         private readonly string _indexName;
         private readonly IOptions<ElasticsearchSettings> _elasticSearchSettings;
 
-        public MasterPerformIndexInitializer(IElasticClient elasticClient, IndexNameResolver indexNameResolver, IOptions<ElasticsearchSettings> elasticSearchSettings)
+        public MasterPerformIndexInitializer(IElasticClient elasticClient, IIndexNameResolver indexNameResolver, IOptions<ElasticsearchSettings> elasticSearchSettings)
         {
             this._elasticClient = elasticClient;
-            this._indexName = indexNameResolver.Resolve<Document>();
+            this._indexName = indexNameResolver.GetIndexNameFor<Document>();
             this._elasticSearchSettings = elasticSearchSettings;
         }
 
@@ -29,11 +30,15 @@ namespace MasterPerform.Mapping
 
             var elasticResponse = _elasticClient.Indices.Create(_indexName, x => x
                 .Settings(s => s
+                    .Setting(CustomSettings.MAX_NGRAM_DIFF, 100)
                     .NumberOfShards(_elasticSearchSettings.Value.ShardsNumber)
                     .Analysis(a => a
+                        .Tokenizers(z => z
+                            .NGram())
                         .Analyzers(z => z
                             .StandardLowercase()
-                            .KeywordLowercase())
+                            .KeywordLowercase()
+                            .NGram())
                         .Normalizers(n => n
                             .Lowercase())
                     )

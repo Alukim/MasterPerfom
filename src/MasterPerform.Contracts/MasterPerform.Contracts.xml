@@ -4,6 +4,55 @@
         <name>MasterPerform.Contracts</name>
     </assembly>
     <members>
+        <member name="T:MasterPerform.Contracts.Commands.CreateDocument">
+            <summary>
+            Command used to create new document.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Commands.CreateDocument.#ctor(MasterPerform.Contracts.Entities.DocumentDetails,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address})">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="documentDetails">Document details.</param>
+            <param name="addresses">Document addresses.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.CreateDocument.DocumentDetails">
+            <summary>
+            Document details.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.CreateDocument.Addresses">
+            <summary>
+            Document addresses.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.CreateDocument.CreatedId">
+            <summary>
+            Id of newly created id.
+            </summary>
+        </member>
+        <member name="T:MasterPerform.Contracts.Commands.UpdateDocumentAddresses">
+            <summary>
+            Command used to update document addresses.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Commands.UpdateDocumentAddresses.#ctor(System.Guid,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address})">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="documentId">Document id.</param>
+            <param name="addresses">Document addresses.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.UpdateDocumentAddresses.DocumentId">
+            <summary>
+            Id of document.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.UpdateDocumentAddresses.Addresses">
+            <summary>
+            Document addresses.
+            </summary>
+        </member>
         <member name="T:MasterPerform.Contracts.Commands.UpdateDocumentDetails">
             <summary>
             Command used to update document details.
@@ -86,6 +135,84 @@
         <member name="P:MasterPerform.Contracts.Entities.DocumentDetails.Phone">
             <summary>
             Phone number.
+            </summary>
+        </member>
+        <member name="T:MasterPerform.Contracts.Queries.GetDocument">
+            <summary>
+            Query used to get document.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Queries.GetDocument.#ctor(System.Guid)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="documentId">Id of document.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Queries.GetDocument.DocumentId">
+            <summary>
+            Id of document.
+            </summary>
+        </member>
+        <member name="T:MasterPerform.Contracts.Queries.GetDocuments">
+            <summary>
+            Query used to get list of documents.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Queries.GetDocuments.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="query">Query phrase.</param>
+            <param name="pageSize">Page size.</param>
+            <param name="pageNumber">Page number.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Queries.GetDocuments.Query">
+            <summary>
+            Query phrase.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Queries.GetDocuments.PageSize">
+            <summary>
+            Page size.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Queries.GetDocuments.PageNumber">
+            <summary>
+            Page number.
+            </summary>
+        </member>
+        <member name="T:MasterPerform.Contracts.Responses.DocumentResponse">
+            <summary>
+            Representation of document response.
+            </summary>
+        </member>
+        <member name="M:MasterPerform.Contracts.Responses.DocumentResponse.#ctor(System.Guid,MasterPerform.Contracts.Entities.DocumentDetails,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address},System.Nullable{System.Guid})">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="documentId">Id of document.</param>
+            <param name="documentDetails">Document details.</param>
+            <param name="addresses">Document addresses.</param>
+            <param name="similarDocument">Id of similar document.</param>
+        </member>
+        <member name="P:MasterPerform.Contracts.Responses.DocumentResponse.DocumentId">
+            <summary>
+            Id of document.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Responses.DocumentResponse.DocumentDetails">
+            <summary>
+            Document details.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Responses.DocumentResponse.Addresses">
+            <summary>
+            Document addresses.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Responses.DocumentResponse.SimilarDocument">
+            <summary>
+            Id of similar document.
             </summary>
         </member>
     </members>

@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.WebApi", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Infrastructure", "src\MasterPerform.Infrastructure\MasterPerform.Infrastructure.csproj", "{744DA9F5-9BD8-46F1-9016-E043F7BA9E30}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Infrastructure.Tests", "src\MasterPerform.Infrastructure.Tests\MasterPerform.Infrastructure.Tests.csproj", "{FFB50145-4BAA-4F33-A31C-CA6476866763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Tests", "src\MasterPerform.Infrastructure.Tests\MasterPerform.Tests.csproj", "{FFB50145-4BAA-4F33-A31C-CA6476866763}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform.Contracts", "src\MasterPerform.Contracts\MasterPerform.Contracts.csproj", "{E1AF15D7-D1E0-4369-B11F-2D620432C21A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterPerform", "src\MasterPerform\MasterPerform.csproj", "{068E9FDC-A305-405E-825F-32E3937DC3AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterPerform", "src\MasterPerform\MasterPerform.csproj", "{068E9FDC-A305-405E-825F-32E3937DC3AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

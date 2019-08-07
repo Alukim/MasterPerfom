@@ -1,5 +1,4 @@
-﻿using MasterPerform.Infrastructure.ElasticSearch.Mappings;
-using Nest;
+﻿using Nest;
 
 namespace MasterPerform.Infrastructure.Elasticsearch.Mappings.Descriptors
 {

@@ -4,7 +4,6 @@ using MasterPerform.Contracts.Responses;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.WebApi.Utilities.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -68,7 +67,7 @@ namespace MasterPerform.WebApi.Controllers
         /// Update document details operation.
         /// </summary>
         /// <returns>HTTP 204</returns>
-        [HttpPatch("{documentId}/details", Name = "DocumentDetails.UpdateDetails")]
+        [HttpPut("{documentId}/details", Name = "DocumentDetails.UpdateDetails")]
         [ProducesResponseType(204)]
         public async Task<IActionResult> UpdateDocumentDetails([FromBody] UpdateDocumentDetails command)
         {
@@ -82,9 +81,10 @@ namespace MasterPerform.WebApi.Controllers
         /// <returns>HTTP 204</returns>
         [HttpPut("{documentId}/addresses", Name = "DocumentDetails.UpdateAddresses")]
         [ProducesResponseType(204)]
-        public Task<IActionResult> UpdateDocumentAddresses()
+        public async Task<IActionResult> UpdateDocumentAddresses([FromBody] UpdateDocumentAddresses command)
         {
-            throw new NotImplementedException();
+            await _commandQueryProvider.SendAsync(command);
+            return NoContent();
         }
     }
 }

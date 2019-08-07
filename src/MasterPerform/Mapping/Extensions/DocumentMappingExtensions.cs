@@ -35,7 +35,7 @@ namespace MasterPerform.Mapping.Extensions
         public static PropertiesDescriptor<TObject> MapTextWithMatchingFields<TObject>(
             this PropertiesDescriptor<TObject> descriptor,
             Expression<Func<TObject, object>> field,
-            string textAnalyzer = CustomAnalyzers.STANDARD_LOWERCASE,
+            string textAnalyzer = CustomAnalyzers.NGRAM_ANALYZER,
             string searchAnalyzer = CustomAnalyzers.STANDARD_LOWERCASE,
             string exactMatchNormalizer = CustomNormalizers.KEYWORD_LOWERCASE,
             string startWithAnalyzer = CustomAnalyzers.KEYWORD_LOWERCASE)

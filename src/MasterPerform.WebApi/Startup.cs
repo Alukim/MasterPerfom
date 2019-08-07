@@ -1,6 +1,7 @@
 ﻿using MasterPerform.Contracts.Commands;
 using MasterPerform.Infrastructure.Bootstrap;
 using MasterPerform.Infrastructure.Elasticsearch;
+using MasterPerform.Infrastructure.EnvironmentPrefixer;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.Infrastructure.Swagger;
 using MasterPerform.Infrastructure.WebApi.Middlewares;
@@ -38,6 +39,8 @@ namespace MasterPerform.WebApi
             services
                 .RegisterCommandQueryProvider()
                 .AddElasticSearchConnection(configuration: Configuration, defaultIndexName: MasterPerformBootstrap.IndexName)
+                .RegisterEnvironmnentPrefixer()
+                .RegisterEnvironmentSettings(Configuration)
                 .AddMicroserviceBootstrap<MasterPerformBootstrap>()
                 .AddSwaggerWithDocumentationFromAssemblyContaining<CreateDocument>()
                 .AddMvc()

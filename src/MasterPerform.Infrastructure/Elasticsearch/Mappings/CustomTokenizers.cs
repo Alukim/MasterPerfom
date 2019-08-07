@@ -4,5 +4,6 @@
     {
         public const string STANDARD = "standard";
         public const string KEYWORD = "keyword";
+        public const string NGRAM = "ngram";
     }
 }

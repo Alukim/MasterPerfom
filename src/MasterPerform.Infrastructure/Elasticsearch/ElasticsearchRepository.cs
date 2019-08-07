@@ -12,10 +12,10 @@ namespace MasterPerform.Infrastructure.Elasticsearch
         private readonly IElasticClient elasticClient;
         private readonly string indexName;
 
-        public ElasticsearchRepository(IElasticClient elasticClient, IndexNameResolver indexNameResolver)
+        public ElasticsearchRepository(IElasticClient elasticClient, IIndexNameResolver indexNameResolver)
         {
             this.elasticClient = elasticClient;
-            this.indexName = indexNameResolver.Resolve<TEntity>();
+            this.indexName = indexNameResolver.GetIndexNameFor<TEntity>();
         }
 
         public async Task<TEntity> FindAsync(Guid id)

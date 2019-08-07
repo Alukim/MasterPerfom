@@ -3,5 +3,6 @@
     public class CustomFilters
     {
         public const string LOWERCASE = "lowercase";
+        public const string ASCIIFOLDING = "asciifolding";
     }
 }

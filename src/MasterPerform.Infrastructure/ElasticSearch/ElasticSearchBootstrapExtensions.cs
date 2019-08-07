@@ -16,11 +16,17 @@ namespace MasterPerform.Infrastructure.Elasticsearch
                 .Configure<ElasticsearchSettings>(x => config.GetSection(nameof(ElasticsearchSettings)).Bind(x));
         }
 
+        public static IServiceCollection RegisterIndexNameResolver(this IServiceCollection services)
+        {
+            return services.AddSingleton<IIndexNameResolver, EnvironmentIndexNameResolver>();
+        }
+
         public static IServiceCollection AddElasticSearchConnection(this IServiceCollection services,
             IConfiguration configuration, string defaultIndexName,
             Func<IServiceProvider, ConnectionSettings, ConnectionSettings> externalConfigurations = null)
         {
             services.AddElasticsearchSettings(configuration);
+            services.RegisterIndexNameResolver();
 
             services.AddSingleton<IElasticClient>(sp => new ElasticClient(sp.GetService<ConnectionSettings>()));
             services.AddSingleton(sp => new IndexNameResolver(sp.GetRequiredService<ConnectionSettings>()));
