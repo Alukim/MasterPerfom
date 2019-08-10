@@ -1,12 +1,12 @@
 ﻿using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Elasticsearch;
+using MasterPerform.Infrastructure.Elasticsearch.Mappings;
 using MasterPerform.Infrastructure.Elasticsearch.Mappings.Descriptors;
 using MasterPerform.Infrastructure.ElasticSearch;
 using MasterPerform.Mapping.Extensions;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
-using MasterPerform.Infrastructure.Elasticsearch.Mappings;
 
 namespace MasterPerform.Mapping
 {
@@ -33,14 +33,22 @@ namespace MasterPerform.Mapping
                     .Setting(CustomSettings.MAX_NGRAM_DIFF, 100)
                     .NumberOfShards(_elasticSearchSettings.Value.ShardsNumber)
                     .Analysis(a => a
+                        .CharFilters(z => z
+                            .AlphanumericChar())
+                        .TokenFilters(z => z
+                            .AlphanumericToken())
                         .Tokenizers(z => z
                             .NGram())
                         .Analyzers(z => z
                             .StandardLowercase()
                             .KeywordLowercase()
-                            .NGram())
+                            .KeywordLowercaseSearch()
+                            .Alphanumeric()
+                            .NGram()
+                            .NGramAlphanumeric())
                         .Normalizers(n => n
-                            .Lowercase())
+                            .Lowercase()
+                            .Alphanumeric())
                     )
                 )
                 .Map<Document>(m => m.MapDocuments()));

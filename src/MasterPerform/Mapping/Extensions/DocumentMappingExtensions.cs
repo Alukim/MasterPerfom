@@ -21,7 +21,7 @@ namespace MasterPerform.Mapping.Extensions
                     .MapTextWithMatchingFields(z => z.FirstName)
                     .MapTextWithMatchingFields(z => z.LastName)
                     .MapTextWithMatchingFields(z => z.Email)
-                    .MapTextWithMatchingFields(z => z.Phone))))
+                    .MapTextWithMatchingFields(z => z.Phone, textAnalyzer: CustomAnalyzers.NGRAM_ALPHANUMERIC_ANALYZER, searchAnalyzer: CustomAnalyzers.ALPHANUMERIC, exactMatchNormalizer: CustomNormalizers.ALPHANUMERIC_NORMALIZER, startWithAnalyzer: CustomAnalyzers.ALPHANUMERIC))))
         .Properties(p => p
             .Nested<Address>(pp => pp
                 .Name(z => z.Addresses)
@@ -36,7 +36,7 @@ namespace MasterPerform.Mapping.Extensions
             this PropertiesDescriptor<TObject> descriptor,
             Expression<Func<TObject, object>> field,
             string textAnalyzer = CustomAnalyzers.NGRAM_ANALYZER,
-            string searchAnalyzer = CustomAnalyzers.STANDARD_LOWERCASE,
+            string searchAnalyzer = CustomAnalyzers.KEYWORD_LOWERCASE_SEARCH,
             string exactMatchNormalizer = CustomNormalizers.KEYWORD_LOWERCASE,
             string startWithAnalyzer = CustomAnalyzers.KEYWORD_LOWERCASE)
             where TObject : class
