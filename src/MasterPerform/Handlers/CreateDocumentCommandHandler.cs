@@ -11,11 +11,11 @@ namespace MasterPerform.Handlers
     public class CreateDocumentCommandHandler :
         ICommandHandler<CreateDocument>
     {
-        private readonly IEntityRepository<Document> repository;
+        private readonly IEntityRepository<Document> _repository;
 
         public CreateDocumentCommandHandler(IEntityRepository<Document> repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         public async Task HandleAsync(CreateDocument command)
@@ -33,7 +33,7 @@ namespace MasterPerform.Handlers
                     state: x.State)).ToList(),
                 similarDocument: null);
 
-            await repository.AddAsync(document);
+            await _repository.AddAsync(document);
             command.CreatedId = document.Id;
         }
     }

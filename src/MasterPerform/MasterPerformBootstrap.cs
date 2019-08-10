@@ -1,9 +1,12 @@
-﻿using MasterPerform.Entities;
+﻿using MasterPerform.Contracts.Queries;
+using MasterPerform.Descriptors;
+using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Bootstrap;
 using MasterPerform.Infrastructure.Elasticsearch;
 using MasterPerform.Infrastructure.ElasticSearch;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.Mapping;
+using MasterPerform.QueryBuilders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -18,6 +21,8 @@ namespace MasterPerform
             RegisterIndexInitializer(serviceCollection);
             RegisterCommandHandlers(serviceCollection);
             RegisterRepositories(serviceCollection);
+            RegisterQueryBuilders(serviceCollection);
+            RegisterDescriptors(serviceCollection);
         }
 
         public static void RegisterRepositories(IServiceCollection serviceCollection)
@@ -34,6 +39,15 @@ namespace MasterPerform
         {
             serviceCollection.RegisterAllCommandHandlersFromAssemblyContaining<MasterPerformBootstrap>();
             serviceCollection.RegisterAllQueryHandlersFromAssemblyContaining<MasterPerformBootstrap>();
+        }
+
+        private static void RegisterQueryBuilders(IServiceCollection serviceCollection)
+        {
+            serviceCollection.RegisterQueryBuilder<GetDocuments, Document, GetDocumentsQueryBuilder>();
+        }
+        private static void RegisterDescriptors(IServiceCollection serviceCollection)
+        {
+            serviceCollection.RegisterFullTextSearchDescriptor(MasterPerformFullTextSearchDescriptor.Instance);
         }
 
         public override void Run(IServiceProvider serviceProvider)

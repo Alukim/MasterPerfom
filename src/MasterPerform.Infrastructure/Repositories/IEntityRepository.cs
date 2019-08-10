@@ -14,5 +14,7 @@ namespace MasterPerform.Infrastructure.Repositories
         Task AddAsync(TEntity entity);
 
         Task DeleteAsync(TEntity entity);
+
+        Task UpdateAsync<TPart>(TPart updatePart) where TPart : class, IEntity;
     }
 }

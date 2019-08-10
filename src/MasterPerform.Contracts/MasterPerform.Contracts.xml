@@ -9,12 +9,13 @@
             Command used to create new document.
             </summary>
         </member>
-        <member name="M:MasterPerform.Contracts.Commands.CreateDocument.#ctor(MasterPerform.Contracts.Entities.DocumentDetails,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address})">
+        <member name="M:MasterPerform.Contracts.Commands.CreateDocument.#ctor(MasterPerform.Contracts.Entities.DocumentDetails,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address},System.Boolean)">
             <summary>
             Default constructor.
             </summary>
             <param name="documentDetails">Document details.</param>
             <param name="addresses">Document addresses.</param>
+            <param name="findSimilar">Flag indicate that operation should find similar document after creation.</param>
         </member>
         <member name="P:MasterPerform.Contracts.Commands.CreateDocument.DocumentDetails">
             <summary>
@@ -24,6 +25,11 @@
         <member name="P:MasterPerform.Contracts.Commands.CreateDocument.Addresses">
             <summary>
             Document addresses.
+            </summary>
+        </member>
+        <member name="P:MasterPerform.Contracts.Commands.CreateDocument.FindSimilar">
+            <summary>
+            Flag indicate that operation should find similar document after creation.
             </summary>
         </member>
         <member name="P:MasterPerform.Contracts.Commands.CreateDocument.CreatedId">

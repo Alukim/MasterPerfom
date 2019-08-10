@@ -17,5 +17,7 @@ namespace MasterPerform.Descriptors
             RegisterNestedFullTextSearchDefinition(z => z.Addresses.First().City, z => z.Addresses);
             RegisterNestedFullTextSearchDefinition(z => z.Addresses.First().State, z => z.Addresses);
         }
+
+        public static MasterPerformFullTextSearchDescriptor Instance => new MasterPerformFullTextSearchDescriptor();
     }
 }

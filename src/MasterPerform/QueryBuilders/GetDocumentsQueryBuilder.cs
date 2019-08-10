@@ -4,7 +4,6 @@ using MasterPerform.Infrastructure.Elasticsearch.Descriptors;
 using MasterPerform.Infrastructure.Elasticsearch.Queries;
 using Nest;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MasterPerform.QueryBuilders
 {
@@ -29,7 +28,14 @@ namespace MasterPerform.QueryBuilders
 
                 foreach (var word in words)
                 {
-                    queries.AddRange(descriptor.Definitions.Select(z => z(word)));
+                    var wordQueryContainer = new QueryContainer();
+
+                    foreach (var descriptorDefinition in descriptor.Definitions)
+                    {
+                        wordQueryContainer |= descriptorDefinition(word);
+                    }
+
+                    queries.Add(wordQueryContainer);
                 }
 
                 queryContainer = new BoolQuery

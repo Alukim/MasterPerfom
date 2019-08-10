@@ -26,6 +26,7 @@ namespace MasterPerform.Entities
 
         public DocumentDetails Details { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
         public IReadOnlyCollection<Address> Addresses { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Include)]

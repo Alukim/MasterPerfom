@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MasterPerform.Contracts.Commands;
-using MasterPerform.Contracts.Entities;
+﻿using FluentAssertions;
+using MasterPerform.Entities;
+using MasterPerform.Infrastructure.Exceptions;
+using MasterPerform.Infrastructure.Tests;
 using MasterPerform.Tests.Documents.API;
 using MasterPerform.Tests.Fixtures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
+using Address = MasterPerform.Contracts.Entities.Address;
+using DocumentDetails = MasterPerform.Contracts.Entities.DocumentDetails;
 
 namespace MasterPerform.Tests.Documents
 {
@@ -26,7 +32,7 @@ namespace MasterPerform.Tests.Documents
         {
             // Arrange
 
-            var command = GenerateCreateDocument();
+            var command = fixture.DocumentFactory.GenerateSimpleCreateDocument();
 
             // Act
 
@@ -37,21 +43,183 @@ namespace MasterPerform.Tests.Documents
             var document = await fixture.Client.GetDocument(command.CreatedId);
 
             document.Should().NotBeNull();
+            document.DocumentDetails.Should().BeEquivalentTo(command.DocumentDetails);
+            document.Addresses.Should().BeEquivalentTo(command.Addresses);
+        }
+         
+        [Fact(DisplayName = "User can update document details.")]
+        public async Task UpdateDocumentDetails_SuccessfullyUpdated()
+        {
+            // Arrange
+
+            var command = fixture.DocumentFactory.GenerateSimpleCreateDocument();
+            await fixture.Client.CreateDocument(command);
+
+            var updateCommand = fixture.DocumentFactory.GenerateUpdateDocumentDetails(command.CreatedId,
+                new DocumentDetails(
+                    firstName: "Jan",
+                    lastName: "Nowak",
+                    email: "jan.nowak@gmail.com",
+                    phone: null));
+
+            // Act
+
+            await fixture.Client.UpdateDocumentDetails(updateCommand);
+
+            // Assert
+
+            var document = await fixture.Client.GetDocument(updateCommand.DocumentId);
+
+            document.Should().NotBeNull();
+            document.DocumentDetails.Should().BeEquivalentTo(updateCommand.Details);
+            document.Addresses.Should().BeEquivalentTo(command.Addresses);
         }
 
-        private CreateDocument GenerateCreateDocument()
+        [Fact(DisplayName = "User can't update not existing document details.")]
+        public async Task UpdateDocumentDetails_ThrowException_EntityNotFound()
         {
-            return new CreateDocument(
-                documentDetails: new DocumentDetails(
-                    firstName: "John",
-                    lastName: "Smith",
-                    email: "john.smith@gmail.com",
-                    phone: "12345467898"),
-                addresses: new List<Address>
+            // Arrange
+
+            var notExistingDocumentId = Guid.NewGuid();    
+
+            var updateCommand = fixture.DocumentFactory.GenerateUpdateDocumentDetails(notExistingDocumentId,
+                new DocumentDetails(
+                    firstName: "Jan",
+                    lastName: "Nowak",
+                    email: "jan.nowak@gmail.com",
+                    phone: null));
+
+            // Act, Assert
+
+            var exception = await Assert.ThrowsAsync<TestRequestFailed>(async () => await fixture.Client.UpdateDocumentDetails(updateCommand));
+            exception.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            exception.Report.Details.First().Code.Should().Be(typeof(EntityNotFound).Name);
+        }
+
+        [Fact(DisplayName = "User can update document addresses.")]
+        public async Task UpdateDocumentAddresses_SuccessfullyUpdated()
+        {
+            // Arrange
+
+            var command = fixture.DocumentFactory.GenerateSimpleCreateDocument();
+            await fixture.Client.CreateDocument(command);
+
+            var updateCommand = fixture.DocumentFactory.GenerateUpdateDocumentAddresses(command.CreatedId,
+                new List<Address>
                 {
-                    new Address(addressLine: "Chorzowska 148", city: "Katowice", state: "Śląsk"),
-                    new Address(addressLine: "Przewozowa 32", city: "Gliwice", state: "Śląsk")
+                    new Address(addressLine: "New Address 14", city: "New city", state: "New state")
                 });
+
+            // Act
+
+            await fixture.Client.UpdateDocumentAddresses(updateCommand);
+
+            // Assert
+
+            var document = await fixture.Client.GetDocument(updateCommand.DocumentId);
+
+            document.Should().NotBeNull();
+            document.DocumentDetails.Should().BeEquivalentTo(command.DocumentDetails);
+            document.Addresses.Should().BeEquivalentTo(updateCommand.Addresses);
+        }
+
+        [Fact(DisplayName = "User can't update not existing document addresses.")]
+        public async Task UpdateDocumentAddresses_ThrowException_EntityNotFound()
+        {
+            // Arrange
+
+            var notExistingDocumentId = Guid.NewGuid();
+
+            var updateCommand = fixture.DocumentFactory.GenerateUpdateDocumentAddresses(notExistingDocumentId,
+                new List<Address>
+                {
+                    new Address(addressLine: "New Address 14", city: "New city", state: "New state")
+                });
+
+            // Act, Assert
+
+            var exception = await Assert.ThrowsAsync<TestRequestFailed>(async () => await fixture.Client.UpdateDocumentAddresses(updateCommand));
+            exception.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            exception.Report.Details.First().Code.Should().Be(typeof(EntityNotFound).Name);
+        }
+
+        [Fact(DisplayName = "User can't get not existing document.")]
+        public async Task GetDocument_ThrowException_EntityNotFound()
+        {
+            // Arrange
+
+            var notExistingDocumentId = Guid.NewGuid();
+
+            // Act, Assert
+
+            var exception = await Assert.ThrowsAsync<TestRequestFailed>(async () => await fixture.Client.GetDocument(notExistingDocumentId));
+            exception.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            exception.Report.Details.First().Code.Should().Be(typeof(EntityNotFound).Name);
+        }
+
+        [Fact(DisplayName = "User can get list of documents.")]
+        public async Task GetDocuments_SuccessfullyGet()
+        {
+            // Arrange
+
+            var command = fixture.DocumentFactory.GenerateSimpleCreateDocument();
+            await fixture.Client.CreateDocument(command);
+
+            var command2 = fixture.DocumentFactory.GenerateCreateDocument(new DocumentDetails(
+                firstName: "Bartosz",
+                lastName: "Kowalski",
+                email: "b.k@gmail.com",
+                phone: "14785236998"));
+            await fixture.Client.CreateDocument(command2);
+
+            var command3 = fixture.DocumentFactory.GenerateCreateDocument(new DocumentDetails(
+                firstName: "Jan",
+                lastName: "Nowak",
+                email: "j.nowak@o2.com",
+                phone: "5478632"));
+            await fixture.Client.CreateDocument(command3);
+
+            fixture.RefreshIndexOfType<Document>();
+
+            // Act
+
+            var collection = await fixture.Client.GetDocuments(pageSize: 50, pageNumber: 1);
+
+            // Assert
+
+            collection.Should().Contain(z => z.DocumentId == command.CreatedId);
+            collection.Should().Contain(z => z.DocumentId == command2.CreatedId);
+            collection.Should().Contain(z => z.DocumentId == command3.CreatedId);
+        }
+
+        [Fact(DisplayName = "User can FTS to get list of documents.")]
+        public async Task GetDocuments_FTS_SuccessfullyGet()
+        {
+            // Arrange
+
+            var command = fixture.DocumentFactory.GenerateSimpleCreateDocument();
+            await fixture.Client.CreateDocument(command);
+
+            var command2 = fixture.DocumentFactory.GenerateCreateDocument(new DocumentDetails(
+                firstName: "Grzegorz",
+                lastName: "Hellmans",
+                email: "g.hellmans@email.net",
+                phone: "555888222"));
+            await fixture.Client.CreateDocument(command2);
+
+            fixture.RefreshIndexOfType<Document>();
+
+            // Act
+
+            var collectionExactMatch = await fixture.Client.GetDocuments(query: "Grzegorz", pageSize: 50, pageNumber: 1);
+            var collectionContains = await fixture.Client.GetDocuments(query: "llman", pageSize: 50, pageNumber: 1);
+            var collectionStartsWith = await fixture.Client.GetDocuments(query: "g.hellmans", pageSize: 50, pageNumber: 1);
+
+            // Assert
+
+            collectionExactMatch.Should().HaveCount(1).And.ContainSingle(z => z.DocumentId == command2.CreatedId);
+            collectionContains.Should().HaveCount(1).And.ContainSingle(z => z.DocumentId == command2.CreatedId);
+            collectionStartsWith.Should().HaveCount(1).And.ContainSingle(z => z.DocumentId == command2.CreatedId);
         }
     }
 }

@@ -29,11 +29,8 @@ namespace MasterPerform.Tests.Documents.API
         public static async Task UpdateDocumentDetails(this HttpClient client, UpdateDocumentDetails command)
         {
             var response = await client.Put(
-                url: $"api/master-perform/document/{command.DocumentId}",
-                content: new
-                {
-                    command.Details
-                });
+                url: $"api/master-perform/document/{command.DocumentId}/details",
+                content: command.Details);
 
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
@@ -41,23 +38,16 @@ namespace MasterPerform.Tests.Documents.API
         public static async Task UpdateDocumentAddresses(this HttpClient client, UpdateDocumentAddresses command)
         {
             var response = await client.Put(
-                url: $"api/master-perform/document/{command.DocumentId}",
-                content: new
-                {
-                    command.Addresses
-                });
+                url: $"api/master-perform/document/{command.DocumentId}/addresses",
+                content: command.Addresses);
 
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        public static async Task<DocumentResponse> GetDocument(this HttpClient client, Guid documentId)
-        {
-            return await client.Get<DocumentResponse>(url: $"api/master-perform/document/{documentId}");
-        }
+        public static Task<DocumentResponse> GetDocument(this HttpClient client, Guid documentId)
+            => client.Get<DocumentResponse>(url: $"api/master-perform/document/{documentId}");
 
-        public static async Task<IReadOnlyCollection<DocumentResponse>> GetDocuments(this HttpClient client, string query = null, int? pageSize = null, int? pageNumber = null)
-        {
-            return await client.Get<IReadOnlyCollection<DocumentResponse>>(url: $"api/master-perform/document", queryParams: new {query, pageSize, pageNumber});
-        }
+        public static Task<IReadOnlyCollection<DocumentResponse>> GetDocuments(this HttpClient client, string query = null, int? pageSize = null, int? pageNumber = null)
+            => client.Get<IReadOnlyCollection<DocumentResponse>>(url: $"api/master-perform/document", queryParams: new {query, pageSize, pageNumber});
     }
 }

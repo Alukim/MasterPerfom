@@ -2,7 +2,7 @@
 
 namespace MasterPerform.EntityParts
 {
-    internal interface IDocumentDetailsPart
+    public interface IDocumentDetailsPart
     {
         DocumentDetails Details { get; }
     }

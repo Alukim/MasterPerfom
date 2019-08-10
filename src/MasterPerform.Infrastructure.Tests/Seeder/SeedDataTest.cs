@@ -28,7 +28,7 @@ namespace MasterPerform.Tests.Seeder
         }
 
 
-        [Fact(DisplayName = "Seed data"/*, Skip = "Only for seed."*/)]
+        [Fact(DisplayName = "Seed data", Skip = "Only for seed.")]
         public async Task SeedData()
         {
             for (long i = 0; i < DataCounts; ++i)

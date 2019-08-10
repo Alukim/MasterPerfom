@@ -15,12 +15,15 @@ namespace MasterPerform.Contracts.Commands
         /// </summary>
         /// <param name="documentDetails">Document details.</param>
         /// <param name="addresses">Document addresses.</param>
+        /// <param name="findSimilar">Flag indicate that operation should find similar document after creation.</param>
         public CreateDocument(
             DocumentDetails documentDetails,
-            IReadOnlyCollection<Address> addresses)
+            IReadOnlyCollection<Address> addresses,
+            bool findSimilar)
         {
             DocumentDetails = documentDetails;
             Addresses = addresses;
+            FindSimilar = findSimilar;
         }
 
         /// <summary>
@@ -32,6 +35,11 @@ namespace MasterPerform.Contracts.Commands
         /// Document addresses.
         /// </summary>
         public IReadOnlyCollection<Address> Addresses { get; }
+
+        /// <summary>
+        /// Flag indicate that operation should find similar document after creation.
+        /// </summary>
+        public bool FindSimilar { get; }
 
         /// <summary>
         /// Id of newly created id.

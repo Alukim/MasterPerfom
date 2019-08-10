@@ -29,20 +29,20 @@
             </summary>
             <returns>Collection of DocumentResponse.</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetDocument(MasterPerform.Contracts.Queries.GetDocument)">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.GetDocument(System.Guid)">
             <summary>
             Get document by id.
             </summary>
-            <param name="query">GetDocument class.</param>
+            <param name="documentId">Id of document to get.</param>
             <returns>DocumentResponse</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentDetails(MasterPerform.Contracts.Commands.UpdateDocumentDetails)">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentDetails(System.Guid,MasterPerform.Contracts.Entities.DocumentDetails)">
             <summary>
             Update document details operation.
             </summary>
             <returns>HTTP 204</returns>
         </member>
-        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses(MasterPerform.Contracts.Commands.UpdateDocumentAddresses)">
+        <member name="M:MasterPerform.WebApi.Controllers.DocumentController.UpdateDocumentAddresses(System.Guid,System.Collections.Generic.IReadOnlyCollection{MasterPerform.Contracts.Entities.Address})">
             <summary>
             Update addresses operation
             </summary>

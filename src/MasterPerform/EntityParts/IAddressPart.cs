@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MasterPerform.EntityParts
 {
-    internal interface IAddressPart
+    public interface IAddressPart
     {
         IReadOnlyCollection<Address> Addresses { get; }
     }

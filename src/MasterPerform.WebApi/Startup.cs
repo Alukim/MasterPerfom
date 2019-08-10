@@ -4,6 +4,7 @@ using MasterPerform.Infrastructure.Elasticsearch;
 using MasterPerform.Infrastructure.EnvironmentPrefixer;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.Infrastructure.Swagger;
+using MasterPerform.Infrastructure.WebApi;
 using MasterPerform.Infrastructure.WebApi.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,7 @@ namespace MasterPerform.WebApi
                 .RegisterEnvironmnentPrefixer()
                 .RegisterEnvironmentSettings(Configuration)
                 .AddMicroserviceBootstrap<MasterPerformBootstrap>()
+                .AddContextAccessors()
                 .AddSwaggerWithDocumentationFromAssemblyContaining<CreateDocument>()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -54,8 +56,8 @@ namespace MasterPerform.WebApi
         /// <param name="env">Host.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc()
-                .UseMiddleware<ExceptionMiddleware>()
+            app.UseMiddleware<ExceptionMiddleware>()
+                .UseMvc()
                 .UseSwaggerCore()
                 .ApplicationServices.UseModule();
         }

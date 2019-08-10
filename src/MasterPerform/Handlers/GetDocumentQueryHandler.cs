@@ -10,17 +10,16 @@ namespace MasterPerform.Handlers
 {
     public class GetDocumentQueryHandler : IQueryHandler<GetDocument, DocumentResponse>
     {
-
-        private readonly IEntityRepository<Document> repository;
+        private readonly IEntityRepository<Document> _repository;
 
         public GetDocumentQueryHandler(IEntityRepository<Document> repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         public async Task<DocumentResponse> HandleAsync(GetDocument query)
         {
-            var document = await repository.GetAsync(query.DocumentId);
+            var document = await _repository.GetAsync(query.DocumentId);
             return document.BuildResponse();
         }
     }

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using FluentAssertions;
+using MasterPerform.Infrastructure.Exceptions.Entities;
+using MasterPerform.Infrastructure.Tests;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +22,11 @@ namespace MasterPerform.Tests.Utilities
             SerializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
         }
 
-        public static Task<HttpResponseMessage> Post(this HttpClient client, string url, object content)
-            => client.SendRequest(HttpMethod.Post, url, content);
+        public static async Task<HttpResponseMessage> Post(this HttpClient client, string url, object content)
+        {
+            var response = await client.SendRequest(HttpMethod.Post, url, content);
+            return await response.AssertCreated();
+        }
 
         public static async Task<T> Get<T>(this HttpClient client, string url, object queryParams = null)
         {
@@ -33,13 +40,29 @@ namespace MasterPerform.Tests.Utilities
             }
 
             var response = await client.SendRequest(HttpMethod.Get, address);
-            return response.IsSuccessStatusCode
-                ? JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), SerializerSettings)
-                : throw new Exception();
+            await response.AssertSuccess();
+            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), SerializerSettings);
         }
 
-        public static Task<HttpResponseMessage> Put(this HttpClient client, string url, object content)
-            => client.SendRequest(HttpMethod.Put, url, content);
+        public static async Task<HttpResponseMessage> Put(this HttpClient client, string url, object content)
+        {
+            var response = await client.SendRequest(HttpMethod.Put, url, content);
+            return await response.AssertSuccess();
+        }
+
+        public static async Task<HttpResponseMessage> AssertCreated(this HttpResponseMessage httpResponse)
+        {
+            await httpResponse.AssertSuccess();
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+            return httpResponse;
+        }
+
+        public static async Task<HttpResponseMessage> AssertSuccess(this HttpResponseMessage httpResponse)
+        {
+            return httpResponse.IsSuccessStatusCode
+                ? httpResponse
+                : throw new TestRequestFailed(JsonConvert.DeserializeObject<ExceptionReport>(await httpResponse.Content.ReadAsStringAsync(), SerializerSettings), (int)httpResponse.StatusCode);
+        }
 
         public static Guid GetCreatedId(this HttpResponseMessage response)
         {
@@ -62,5 +85,11 @@ namespace MasterPerform.Tests.Utilities
 
             return await client.SendAsync(request);
         }
+
+        public static void ActionShouldFailWithCode()
+        {
+
+        }
+
     }
 }

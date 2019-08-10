@@ -8,9 +8,11 @@ namespace MasterPerform.Infrastructure.Messaging
 {
     public interface ICommandQueryProvider
     {
-        Task SendAsync(ICommand command);
+        Task SendAsync<TCommand>(TCommand command) where TCommand : ICommand;
 
-        Task<TResponse> SendAsync<TResponse>(IQuery<TResponse> query) where TResponse : class;
+        Task<TResponse> SendAsync<TQuery, TResponse>(TQuery query)
+            where TQuery : IQuery<TResponse>
+            where TResponse : class;
     }
 
     public class CommandQueryProvider : ICommandQueryProvider
@@ -22,16 +24,18 @@ namespace MasterPerform.Infrastructure.Messaging
             this._serviceProvider = serviceProvider;
         }
 
-        public async Task SendAsync(ICommand command)
+        public async Task SendAsync<TCommand>(TCommand command)
+            where TCommand : ICommand
         {
-            var commandHandler = _serviceProvider.GetRequiredService<ICommandHandler<ICommand>>();
+            var commandHandler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
             await commandHandler.HandleAsync(command);
         }
 
-        public async Task<TResponse> SendAsync<TResponse>(IQuery<TResponse> query)
+        public async Task<TResponse> SendAsync<TQuery, TResponse>(TQuery query)
+            where TQuery : IQuery<TResponse>
             where TResponse : class
         {
-            var queryHandler = _serviceProvider.GetRequiredService<IQueryHandler<IQuery<TResponse>, TResponse>>();
+            var queryHandler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResponse>>();
             return await queryHandler.HandleAsync(query);
         }
     }
