@@ -50,6 +50,12 @@ namespace MasterPerform.Infrastructure.Elasticsearch
                     .ThrowExceptions(true)
                     .DefaultIndex(defaultIndexName);
 
+                if (!string.IsNullOrEmpty(esSettings.Username) && !string.IsNullOrEmpty(esSettings.Password))
+                {
+                    connectionSettings = connectionSettings
+                        .BasicAuthentication(esSettings.Username, esSettings.Password);
+                }
+
                 if (externalConfigurations != null)
                     connectionSettings = externalConfigurations(sp, connectionSettings);
 
