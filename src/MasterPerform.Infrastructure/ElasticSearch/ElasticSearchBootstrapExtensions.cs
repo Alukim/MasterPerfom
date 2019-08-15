@@ -70,5 +70,10 @@ namespace MasterPerform.Infrastructure.Elasticsearch
             this IServiceCollection serviceCollection, IFullTextSearchDescriptor<TIndex> instance)
             where TIndex : class, IEntity
             => serviceCollection.AddSingleton(instance);
+
+        public static IServiceCollection RegisterFindSimilarDescriptor<TIndex>(
+            this IServiceCollection serviceCollection, IFindSimilarDescriptor<TIndex> instance)
+            where TIndex : class, IEntity
+            => serviceCollection.AddSingleton(instance);
     }
 }

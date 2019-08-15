@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using MasterPerform.Infrastructure.Bootstrap;
 using MasterPerform.Infrastructure.Elasticsearch;
+using MasterPerform.Infrastructure.Elasticsearch.Descriptors;
+using MasterPerform.Infrastructure.Elasticsearch.Queries;
 using MasterPerform.Infrastructure.EnvironmentPrefixer;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.Infrastructure.Messaging.Handlers;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Nest;
 using Xunit;
 using ConfigurationSettings = MasterPerform.Tests.Infrastructure.TestObjects.ConfigurationSettings;
+using TestQueryBuilder = MasterPerform.Tests.Infrastructure.TestObjects.TestQueryBuilder;
 
 namespace MasterPerform.Tests.Infrastructure
 {
@@ -137,6 +140,42 @@ namespace MasterPerform.Tests.Infrastructure
                 .GetType()
                 .Should()
                 .Be(typeof(TestHandlers));
+        }
+
+        [Fact(DisplayName = "RegisterFullTextSearchDescriptor should register proper descriptor.")]
+        public void RegisterFullTextSearchDescriptor_ShouldRegisterProperDescriptor()
+        {
+            new ServiceCollection()
+                .RegisterFullTextSearchDescriptor(TestFullTextSearchDescriptor.Instance)
+                .BuildServiceProvider()
+                .GetRequiredService<IFullTextSearchDescriptor<TestEntity>>()
+                .GetType()
+                .Should()
+                .Be(typeof(TestFullTextSearchDescriptor));
+        }
+
+        [Fact(DisplayName = "RegisterFindSimilarDescriptor should register proper descriptor.")]
+        public void RegisterFindSimilarDescriptor_ShouldRegisterProperDescriptor()
+        {
+            new ServiceCollection()
+                .RegisterFindSimilarDescriptor(TestFindSimilarDescriptor.Instance)
+                .BuildServiceProvider()
+                .GetRequiredService<IFindSimilarDescriptor<TestEntity>>()
+                .GetType()
+                .Should()
+                .Be(typeof(TestFindSimilarDescriptor));
+        }
+
+        [Fact(DisplayName = "RegisterQueryBuilder should register proper builder.")]
+        public void RegisterQueryBuilder_ShouldRegisterProperBuilder()
+        {
+            new ServiceCollection()
+                .RegisterQueryBuilder<TestQuery, TestEntity, TestQueryBuilder>()
+                .BuildServiceProvider()
+                .GetRequiredService<IElasticsearchQueryBuilder<TestQuery, TestEntity>>()
+                .GetType()
+                .Should()
+                .Be(typeof(TestQueryBuilder));
         }
     }
 }
