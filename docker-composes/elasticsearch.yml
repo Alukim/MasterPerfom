@@ -1,0 +1,17 @@
+version: '3'
+volumes:
+  esdata: {}
+
+services:
+  elasticsearch:
+    restart: always
+    image: "elasticsearch:${ELASTICSEARCH_DOCKER_VERSION}"
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - base
