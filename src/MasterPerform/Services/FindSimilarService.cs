@@ -39,8 +39,7 @@ namespace MasterPerform.Services
                 .Query(x => queryContainerDescriptor)
                 .Sort(x => x.Descending(SortSpecialField.Score))
                 .Size(10)
-                .Index(indexName)
-                .Explain(true));
+                .Index(indexName));
 
             return results
                 ?.Hits

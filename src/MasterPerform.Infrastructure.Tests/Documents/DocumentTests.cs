@@ -242,9 +242,9 @@ namespace MasterPerform.Tests.Documents
             var command2 = fixture.DocumentFactory.GenerateCreateDocument(
                 details: new DocumentDetails(
                     firstName: "Found",
-                    lastName: "Similar",
-                    email: "Document@out",
-                    phone: "48123456789"),
+                    lastName: null,
+                    email: null,
+                    phone: null),
                 addresses: null,
                 findSimilar: true);
 
