@@ -65,13 +65,6 @@ namespace MasterPerform.Infrastructure.Elasticsearch
             return services;
         }
 
-        public static IServiceCollection RegisterQueryBuilder<TQuery, TEntity, TBuilder>(
-            this IServiceCollection serviceCollection)
-            where TQuery : class
-            where TEntity : class, IEntity
-            where TBuilder : class, IElasticsearchQueryBuilder<TQuery, TEntity>
-            => serviceCollection.AddScoped<IElasticsearchQueryBuilder<TQuery, TEntity>, TBuilder>();
-
         public static IServiceCollection RegisterFullTextSearchDescriptor<TIndex>(
             this IServiceCollection serviceCollection, IFullTextSearchDescriptor<TIndex> instance)
             where TIndex : class, IEntity

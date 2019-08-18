@@ -1,7 +1,6 @@
 ﻿using MasterPerform.Infrastructure.ElasticSearch.Mappings;
 using Nest;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace MasterPerform.Infrastructure.Elasticsearch.Descriptors.Definitions
@@ -18,7 +17,5 @@ namespace MasterPerform.Infrastructure.Elasticsearch.Descriptors.Definitions
         public Field ContainsField { get; }
         public Field StartsWithField { get; }
         public Field ExactMatchField { get; }
-
-        public abstract IReadOnlyCollection<QueryContainer> GetQueries();
     }
 }

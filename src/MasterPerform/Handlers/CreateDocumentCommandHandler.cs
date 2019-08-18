@@ -2,6 +2,8 @@
 using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Messaging.Handlers;
 using MasterPerform.Infrastructure.Repositories;
+using MasterPerform.Services;
+using MasterPerform.UpdateModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +14,14 @@ namespace MasterPerform.Handlers
         ICommandHandler<CreateDocument>
     {
         private readonly IEntityRepository<Document> _repository;
+        private readonly FindSimilarService<Document> findSimilarService;
 
-        public CreateDocumentCommandHandler(IEntityRepository<Document> repository)
+        public CreateDocumentCommandHandler(
+            IEntityRepository<Document> repository,
+            FindSimilarService<Document> findSimilarService)
         {
             this._repository = repository;
+            this.findSimilarService = findSimilarService;
         }
 
         public async Task HandleAsync(CreateDocument command)
@@ -35,6 +41,13 @@ namespace MasterPerform.Handlers
 
             await _repository.AddAsync(document);
             command.CreatedId = document.Id;
+
+            if (command.FindSimilar)
+            {
+                var similarDocument = await findSimilarService.FindSimilar(document);
+                var updateModel = new SimilarDocumentUpdate(id: document.Id, similarDocument: similarDocument.Id);
+                await _repository.UpdateAsync(updateModel);
+            }
         }
     }
 }

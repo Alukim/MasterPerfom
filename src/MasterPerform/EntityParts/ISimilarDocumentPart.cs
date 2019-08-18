@@ -2,7 +2,7 @@
 
 namespace MasterPerform.EntityParts
 {
-    internal interface ISimilarDocumentPart
+    public interface ISimilarDocumentPart
     {
         Guid? SimilarDocument { get; }
     }
