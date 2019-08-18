@@ -18,6 +18,9 @@ namespace MasterPerform.Infrastructure.ElasticSearch.Descriptors.Definitions
         {
             QueryContainer internalQuery;
 
+            if (value is null)
+                return null;
+
             switch (type)
             {
                 case QueryType.Contains:

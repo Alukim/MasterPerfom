@@ -46,7 +46,7 @@ namespace MasterPerform.Infrastructure.Elasticsearch
                         connection,
                         sourceSerializer: JsonNetSerializer.Default)
                     .DisableDirectStreaming()
-                    .PrettyJson()
+                    .PrettyJson(true)
                     .ThrowExceptions(true)
                     .DefaultIndex(defaultIndexName);
 

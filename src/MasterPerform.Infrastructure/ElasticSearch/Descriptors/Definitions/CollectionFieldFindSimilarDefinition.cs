@@ -24,27 +24,19 @@ namespace MasterPerform.Infrastructure.ElasticSearch.Descriptors.Definitions
         public IEnumerable<string> GetValuesFromField(TEntity entity)
             => GetValues(entity)?.Where(z => !string.IsNullOrEmpty(z)) ?? Array.Empty<string>();
 
-        public QueryContainer GetQuery(TEntity entity)
+        public IEnumerable<QueryContainer> GetQuery(TEntity entity)
         {
-            var values = GetValuesFromField(entity);
-
-            if (values is null || !values.Any())
-                return null;
-
-            var queryContainer = new QueryContainer();
+            var values = GetValuesFromField(entity)?.ToList() ?? new List<string>();
 
             foreach (var value in values)
             {
-                var internalQuery = new QueryContainer();
+                if (!value.Any())
+                    continue;
 
-                internalQuery |= QueryBuilderExtensions.ExactMatchQuery(ExactMatchField, value, nestedField: NestedPath);
-                internalQuery |= QueryBuilderExtensions.StartsWithQuery(StartsWithField, value, nestedField: NestedPath);
-                internalQuery |= QueryBuilderExtensions.ContainsQuery(ContainsField, value, nestedField: NestedPath);
-
-                queryContainer |= internalQuery;
+                yield return QueryBuilderExtensions.ExactMatchQuery(ExactMatchField, value, nestedField: NestedPath);
+                yield return QueryBuilderExtensions.StartsWithQuery(StartsWithField, value, nestedField: NestedPath);
+                yield return QueryBuilderExtensions.ContainsQuery(ContainsField, value, nestedField: NestedPath);
             }
-
-            return queryContainer;
         }
     }
 }

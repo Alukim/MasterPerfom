@@ -2,10 +2,10 @@
 using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Bootstrap;
 using MasterPerform.Infrastructure.Elasticsearch;
-using MasterPerform.Infrastructure.Elasticsearch.Descriptors;
 using MasterPerform.Infrastructure.ElasticSearch;
 using MasterPerform.Infrastructure.Messaging;
 using MasterPerform.Mapping;
+using MasterPerform.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -26,7 +26,7 @@ namespace MasterPerform
 
         public static void RegisterServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<FindSimilarDescriptor<Document>>();
+            serviceCollection.AddScoped<FindSimilarService<Document>>();
         }
 
         public static void RegisterRepositories(IServiceCollection serviceCollection)

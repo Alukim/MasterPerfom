@@ -2,6 +2,7 @@
 using MasterPerform.Infrastructure.Entities;
 using Nest;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace MasterPerform.Infrastructure.Elasticsearch.Descriptors.Definitions
@@ -16,20 +17,13 @@ namespace MasterPerform.Infrastructure.Elasticsearch.Descriptors.Definitions
             GetValue = getValue;
         }
 
-        public QueryContainer GetQuery(TEntity entity)
+        public IEnumerable<QueryContainer> GetQuery(TEntity entity)
         {
             var value = GetValue(entity);
 
-            if (value is null)
-                return null;
-
-            var internalQuery =  new QueryContainer();
-
-            internalQuery |= QueryBuilderExtensions.ExactMatchQuery(ExactMatchField, value);
-            internalQuery |= QueryBuilderExtensions.StartsWithQuery(StartsWithField, value);
-            internalQuery |= QueryBuilderExtensions.ContainsQuery(ContainsField, value);
-
-            return internalQuery;
+            yield return QueryBuilderExtensions.ExactMatchQuery(ExactMatchField, value);
+            yield return QueryBuilderExtensions.StartsWithQuery(StartsWithField, value);
+            yield return QueryBuilderExtensions.ContainsQuery(ContainsField, value);
         }
     }
 }

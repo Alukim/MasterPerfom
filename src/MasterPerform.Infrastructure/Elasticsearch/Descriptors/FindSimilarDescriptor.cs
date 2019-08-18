@@ -23,7 +23,7 @@ namespace MasterPerform.Infrastructure.Elasticsearch.Descriptors
             => definitions.ToList();
 
         protected FindSimilarDescriptor()
-            => this.definitions = Array.Empty<IFindSimilarDefinition<TIndex>>();
+            => this.definitions = new List<IFindSimilarDefinition<TIndex>>();
 
         protected void RegisterSingleField(Expression<Func<TIndex, object>> field, Func<TIndex, string> getValue)
             => this.definitions.Add(new SingleFieldFindSimilarDefinition<TIndex>(

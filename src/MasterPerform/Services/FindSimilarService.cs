@@ -31,11 +31,16 @@ namespace MasterPerform.Services
                 .AddFindSimilarDefinitions(descriptor.Definitions, entity)
                 .ExcludeEntity<TEntity>(entity.Id);
 
+            var indexName = indexNameResolver.GetIndexNameFor<TEntity>();
+
+            await elasticClient.Indices.RefreshAsync(indexName);
+
             var results = await elasticClient.SearchAsync<TEntity>(z => z
                 .Query(x => queryContainerDescriptor)
                 .Sort(x => x.Descending(SortSpecialField.Score))
                 .Size(10)
-                .Index(indexNameResolver.GetIndexNameFor<TEntity>()));
+                .Index(indexName)
+                .Explain(true));
 
             return results
                 ?.Hits

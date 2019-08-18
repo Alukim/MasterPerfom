@@ -45,7 +45,7 @@ namespace MasterPerform.Handlers
             if (command.FindSimilar)
             {
                 var similarDocument = await findSimilarService.FindSimilar(document);
-                var updateModel = new SimilarDocumentUpdate(id: document.Id, similarDocument: similarDocument.Id);
+                var updateModel = new SimilarDocumentUpdate(id: document.Id, similarDocument: similarDocument?.Id);
                 await _repository.UpdateAsync(updateModel);
             }
         }

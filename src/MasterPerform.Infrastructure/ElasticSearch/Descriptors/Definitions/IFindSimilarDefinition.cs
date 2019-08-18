@@ -1,9 +1,10 @@
 ﻿using Nest;
+using System.Collections.Generic;
 
 namespace MasterPerform.Infrastructure.ElasticSearch.Descriptors.Definitions
 {
     public interface IFindSimilarDefinition<TEntity>
     {
-        QueryContainer GetQuery(TEntity entity);
+        IEnumerable<QueryContainer> GetQuery(TEntity entity);
     }
 }

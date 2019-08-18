@@ -6,7 +6,7 @@ namespace MasterPerform.Descriptors
 {
     public class MasterPerformFindSimilarDescriptor : FindSimilarDescriptor<Document>
     {
-        public MasterPerformFindSimilarDescriptor()
+        public MasterPerformFindSimilarDescriptor() : base()
         {
             RegisterSingleField(z => z.Details.FirstName, z => z.Details?.FirstName);
             RegisterSingleField(z => z.Details.LastName, z => z.Details?.LastName);

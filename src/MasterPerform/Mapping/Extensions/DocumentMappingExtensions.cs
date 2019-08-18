@@ -12,7 +12,7 @@ namespace MasterPerform.Mapping.Extensions
     this TypeMappingDescriptor<Document> mappingsDescriptor)
     => mappingsDescriptor
         .AutoMap()
-        .MapKeywordNonIndexed(z => z.Id)
+        .MapKeyword(z => z.Id)
         .MapKeyword(z => z.SimilarDocument)
         .Properties(p => p
             .Object<DocumentDetails>(pp => pp
@@ -20,7 +20,7 @@ namespace MasterPerform.Mapping.Extensions
                 .Properties(ppp => ppp
                     .MapTextWithMatchingFields(z => z.FirstName)
                     .MapTextWithMatchingFields(z => z.LastName)
-                    .MapTextWithMatchingFields(z => z.Email)
+                    .MapTextWithMatchingFields(z => z.Email, textAnalyzer: CustomAnalyzers.NGRAM_ALPHANUMERIC_ANALYZER, searchAnalyzer: CustomAnalyzers.ALPHANUMERIC, exactMatchNormalizer: CustomNormalizers.ALPHANUMERIC_NORMALIZER, startWithAnalyzer: CustomAnalyzers.ALPHANUMERIC)
                     .MapTextWithMatchingFields(z => z.Phone, textAnalyzer: CustomAnalyzers.NGRAM_ALPHANUMERIC_ANALYZER, searchAnalyzer: CustomAnalyzers.ALPHANUMERIC, exactMatchNormalizer: CustomNormalizers.ALPHANUMERIC_NORMALIZER, startWithAnalyzer: CustomAnalyzers.ALPHANUMERIC))))
         .Properties(p => p
             .Nested<Address>(pp => pp
