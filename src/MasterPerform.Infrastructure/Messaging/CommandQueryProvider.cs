@@ -19,12 +19,12 @@ namespace MasterPerform.Infrastructure.Messaging
     public class CommandQueryProvider : ICommandQueryProvider
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ServiceBusSender serviceBusSender;
+        private readonly ServiceBusSender _serviceBusSender;
 
         public CommandQueryProvider(IServiceProvider serviceProvider, ServiceBusSender serviceBusSender)
         {
             this._serviceProvider = serviceProvider;
-            this.serviceBusSender = serviceBusSender;
+            this._serviceBusSender = serviceBusSender;
         }
 
         public async Task SendAsync<TCommand>(TCommand command)
@@ -32,7 +32,7 @@ namespace MasterPerform.Infrastructure.Messaging
         {
             var commandHandler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
             await commandHandler.HandleAsync(command);
-            await serviceBusSender.SendMessage(command);
+            await _serviceBusSender.SendMessage(command);
         }
 
         public async Task<TResponse> SendAsync<TQuery, TResponse>(TQuery query)
@@ -41,7 +41,7 @@ namespace MasterPerform.Infrastructure.Messaging
         {
             var queryHandler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResponse>>();
             var response = await queryHandler.HandleAsync(query);
-            await serviceBusSender.SendMessage(query);
+            await _serviceBusSender.SendMessage(query);
             return response;
         }
     }

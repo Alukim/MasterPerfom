@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Xunit;
 using ContractAddress = MasterPerform.Contracts.Entities.Address;
 using Document = MasterPerform.Entities.Document;
@@ -24,45 +26,61 @@ namespace MasterPerform.Tests.Seeder
         private readonly MasterPerformFixture fixture;
         private static readonly Random rnd = new Random();
 
-        private const int DataCounts = 100;
-        private const int DataPackage = 100;
-
         private ConcurrentBag<CreateDocument> Commands { get; }
+        private ConcurrentBag<CreateDocument> DataToTest { get; }
 
         public SeedDataTest(MasterPerformFixture fixture)
         {
             this.fixture = fixture;
             Commands = new ConcurrentBag<CreateDocument>();
+            DataToTest = new ConcurrentBag<CreateDocument>();
         }
 
-
+        // Seed 1000000 documents, 10 Tasks - save document, 1 task to generate next random data
         [Fact(DisplayName = "Seed data", Skip = "Only for seed.")]
         public async Task SeedData()
         {
-            for (long i = 0; i < DataCounts; ++i)
-            {
-                var faker = GetFaker();
-                var documents = faker.GenerateBetween(DataPackage, DataPackage);
-                await SaveDocuments(documents);
-            }
+            var tasks = new Task[20];
 
-            const int count = (DataCounts * DataPackage) / 4;
+            for (long i = 0; i < 10; ++i)
+                tasks[i] = Seed();
 
-            var list = Commands.OrderBy(z => z.DocumentDetails?.Email)
+            for (var i = 10; i < 20; ++i)
+                tasks[i] = Task.Run(() => GenerateDataForTest());
+
+            await Task.WhenAll(tasks);
+
+            const int count = 300000;
+
+            Commands.OrderBy(z => z.DocumentDetails?.Email)
                 .Take(count)
-                .ToList();
+                .AsParallel()
+                .ForAll(DataToTest.Add);
 
-            for (var i = 0; i < count; i += 10)
-            {
-                var faker = GetFaker();
-                var documents = faker.Generate(10);
-                foreach (var document in documents)
-                    list.Add(MapToCommand(document));
-            }
-
-            SaveCommandsToJson(list);
+            await SaveCommandsToJson(DataToTest);
 
             Assert.True(true);
+        }
+
+        /// Seed 100000 documents
+        private async Task Seed()
+        {
+            for (long i = 0; i < 1000; ++i)
+            {
+                var faker = GetFaker();
+                var documents = faker.GenerateBetween(100, 100);
+                await SaveDocuments(documents);
+            }
+        }
+
+        private void GenerateDataForTest()
+        {
+            for (var i = 0; i < 30000; i += 100)
+            {
+                var faker = GetFaker();
+                var documents = faker.GenerateBetween(100, 100).Select(MapToCommand);
+                documents.AsParallel().ForAll(DataToTest.Add);
+            }
         }
 
         private async Task SaveDocuments(IReadOnlyCollection<Document> documents)
@@ -80,12 +98,32 @@ namespace MasterPerform.Tests.Seeder
             }
         }
 
-        private void SaveCommandsToJson(IReadOnlyCollection<CreateDocument> documents)
+        private async Task SaveCommandsToJson(IReadOnlyCollection<CreateDocument> documents)
         {
-            using (var file = File.CreateText("./test-data.json"))
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var testFolder = $"test-data-{DateTime.Now:yyyyMMdd_HHmmss}";
+
+            var jsonDataFileNameTemplate = "test-data-{0}.txt";
+            var documentsCount = documents.Count;
+            var documentsToSerialize = documents.ToArray();
+            var records = Enumerable.Range(1, documentsCount).ToList();
+
+            using(var writer = new StreamWriter(Path.Combine(desktopPath, testFolder, "index.csv")))
+            using (var csv = new CsvWriter(writer))
             {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(file, documents);
+                csv.WriteRecords(records);
+            }
+
+            var settings = JsonSerializerSettingsProvider.CreateSerializerSettings();
+
+            for (var i = 1; i <= documentsCount; ++i)
+            {
+                var fileName = string.Format(jsonDataFileNameTemplate, i);
+                using (var file = File.CreateText(Path.Combine(desktopPath, testFolder, fileName)))
+                {
+                    var doc = JsonConvert.SerializeObject(documentsToSerialize[i - 1], settings);
+                    await file.WriteAsync(doc);
+                }
             }
         }
 
