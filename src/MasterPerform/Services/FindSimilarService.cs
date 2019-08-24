@@ -1,9 +1,9 @@
-﻿using MasterPerform.Infrastructure.Elasticsearch.Descriptors;
+﻿using MasterPerform.Infrastructure.Elasticsearch;
+using MasterPerform.Infrastructure.Elasticsearch.Descriptors;
 using MasterPerform.Infrastructure.Entities;
-using MasterPerform.Infrastructure.Repositories;
 using MasterPerform.Services.Extensions;
 using Nest;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MasterPerform.Services
@@ -12,22 +12,40 @@ namespace MasterPerform.Services
         where TEntity : class, IEntity
     {
         private readonly IFindSimilarDescriptor<TEntity> descriptor;
-        private readonly IEntityRepository<TEntity> repository;
+        private readonly IElasticClient elasticClient;
+        private readonly IIndexNameResolver indexNameResolver;
 
-        public FindSimilarService(IFindSimilarDescriptor<TEntity> descriptor, IEntityRepository<TEntity> repository)
+        public FindSimilarService(
+            IFindSimilarDescriptor<TEntity> descriptor,
+            IElasticClient elasticClient,
+            IIndexNameResolver indexNameResolver)
         {
             this.descriptor = descriptor;
-            this.repository = repository;
+            this.elasticClient = elasticClient;
+            this.indexNameResolver = indexNameResolver;
         }
 
-        public async Task<TEntity> FindSimilar(Guid id)
+        public async Task<TEntity> FindSimilar(TEntity entity)
         {
-            var entity = await repository.GetAsync(id);
-
             var queryContainerDescriptor = new QueryContainerDescriptor<TEntity>()
-                .ExcludeEntity<TEntity>(id);
+                .AddFindSimilarDefinitions(descriptor.Definitions, entity)
+                .ExcludeEntity<TEntity>(entity.Id);
 
-            return entity;
+            var indexName = indexNameResolver.GetIndexNameFor<TEntity>();
+
+            await elasticClient.Indices.RefreshAsync(indexName);
+
+            var results = await elasticClient.SearchAsync<TEntity>(z => z
+                .Query(x => queryContainerDescriptor)
+                .Sort(x => x.Descending(SortSpecialField.Score))
+                .Size(10)
+                .Index(indexName));
+
+            return results
+                ?.Hits
+                ?.OrderByDescending(z => z.Score)
+                .FirstOrDefault()
+                ?.Source;
         }
     }
 }

@@ -221,5 +221,45 @@ namespace MasterPerform.Tests.Documents
             collectionContains.Should().HaveCount(1).And.ContainSingle(z => z.DocumentId == command2.CreatedId);
             collectionStartsWith.Should().HaveCount(1).And.ContainSingle(z => z.DocumentId == command2.CreatedId);
         }
+
+        [Fact(DisplayName = "User can create new document and find similar document.")]
+        public async Task CreateDocument_SuccessfullyCreated_SimilarDocumentFounded()
+        {
+            // Arrange
+
+            var documentDetails = new DocumentDetails(
+                firstName: "Founded",
+                lastName: "Similar",
+                email: "Document@outlook.com",
+                phone: "# 48 [123 456 789]");
+
+            var command = fixture.DocumentFactory.GenerateCreateDocument(
+                details: documentDetails,
+                addresses: null,
+                findSimilar: false);
+            await fixture.Client.CreateDocument(command);
+
+            var command2 = fixture.DocumentFactory.GenerateCreateDocument(
+                details: new DocumentDetails(
+                    firstName: "Found",
+                    lastName: null,
+                    email: null,
+                    phone: null),
+                addresses: null,
+                findSimilar: true);
+
+            // Act
+
+            await fixture.Client.CreateDocument(command2);
+
+            // Assert
+
+            var document = await fixture.Client.GetDocument(command2.CreatedId);
+
+            document.Should().NotBeNull();
+            document.DocumentDetails.Should().BeEquivalentTo(command2.DocumentDetails);
+            document.Addresses.Should().BeEquivalentTo(command2.Addresses);
+            document.SimilarDocument.Should().Be(command.CreatedId);
+        }
     }
 }

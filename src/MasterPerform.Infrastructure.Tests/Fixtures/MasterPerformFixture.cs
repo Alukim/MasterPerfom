@@ -25,6 +25,10 @@ namespace MasterPerform.Tests.Fixtures
         public DocumentFactory DocumentFactory { get; }
         public IElasticClient ElasticClient { get; }
 
+        private bool SeedProd = false;
+        private string ProdUserName = "--";
+        private string ProdPassword = "--";
+
         public MasterPerformFixture()
         {
             var host = WebHostExtensions.CreatePreconfiguredWebHostBuilder<Startup>()
@@ -34,6 +38,17 @@ namespace MasterPerform.Tests.Fixtures
                     {
                         {"EnvironmentSettings:Prefix", $"integration-tests-{DateTime.Now:yyyyMMdd_HHmmss}"}
                     });
+
+                    if (SeedProd)
+                    {
+                        config.AddInMemoryCollection(new Dictionary<string, string>
+                        {
+                            {"ElasticsearchSettings:NodeUrl", "http://13.74.64.52:9200"},
+                            {"ElasticsearchSettings:Password", ProdPassword},
+                            {"ElasticsearchSettings:Username", ProdUserName},
+                            {"ElasticsearchSettings:ShardsNumber", "25"}
+                        });
+                    }
                 })
                 .ConfigureServices(sc => { sc.AddSingleton<DocumentFactory>(); });
 

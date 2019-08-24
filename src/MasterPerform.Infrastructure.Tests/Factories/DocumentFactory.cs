@@ -7,7 +7,7 @@ namespace MasterPerform.Tests.Factories
 {
     public class DocumentFactory
     {
-        public CreateDocument GenerateSimpleCreateDocument()
+        public CreateDocument GenerateSimpleCreateDocument(bool findSimilar = false)
             => GenerateCreateDocument(
                 details: new DocumentDetails(
                     firstName: "John",
@@ -19,9 +19,9 @@ namespace MasterPerform.Tests.Factories
                     new Address(addressLine: "Chorzowska 148", city: "Katowice", state: "Śląsk"),
                     new Address(addressLine: "Przewozowa 32", city: "Gliwice", state: "Śląsk")
                 },
-                findSimilar: false);
+                findSimilar: findSimilar);
 
-        public CreateDocument GenerateCreateDocument(DocumentDetails details, IReadOnlyCollection<Address> addresses = null, bool findSimilar = true)
+        public CreateDocument GenerateCreateDocument(DocumentDetails details, IReadOnlyCollection<Address> addresses = null, bool findSimilar = false)
         {
             return new CreateDocument(
                 documentDetails: details,

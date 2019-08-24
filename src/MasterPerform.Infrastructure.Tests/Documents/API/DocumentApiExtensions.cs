@@ -19,7 +19,8 @@ namespace MasterPerform.Tests.Documents.API
                 content: new
                 {
                     command.DocumentDetails,
-                    command.Addresses
+                    command.Addresses,
+                    command.FindSimilar
                 });
 
             command.CreatedId = response.GetCreatedId();

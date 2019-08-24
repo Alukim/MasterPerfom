@@ -1,14 +1,19 @@
 ﻿using Bogus;
 using Bogus.Extensions;
+using MasterPerform.Contracts.Commands;
 using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Repositories;
 using MasterPerform.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using ContractAddress = MasterPerform.Contracts.Entities.Address;
 using Document = MasterPerform.Entities.Document;
 
 namespace MasterPerform.Tests.Seeder
@@ -19,12 +24,15 @@ namespace MasterPerform.Tests.Seeder
         private readonly MasterPerformFixture fixture;
         private static readonly Random rnd = new Random();
 
-        private const long DataCounts = 500;
-        private const int DataPackage = 1000;
+        private const int DataCounts = 100;
+        private const int DataPackage = 100;
+
+        private ConcurrentBag<CreateDocument> Commands { get; }
 
         public SeedDataTest(MasterPerformFixture fixture)
         {
             this.fixture = fixture;
+            Commands = new ConcurrentBag<CreateDocument>();
         }
 
 
@@ -38,6 +46,22 @@ namespace MasterPerform.Tests.Seeder
                 await SaveDocuments(documents);
             }
 
+            const int count = (DataCounts * DataPackage) / 4;
+
+            var list = Commands.OrderBy(z => z.DocumentDetails?.Email)
+                .Take(count)
+                .ToList();
+
+            for (var i = 0; i < count; i += 10)
+            {
+                var faker = GetFaker();
+                var documents = faker.Generate(10);
+                foreach (var document in documents)
+                    list.Add(MapToCommand(document));
+            }
+
+            SaveCommandsToJson(list);
+
             Assert.True(true);
         }
 
@@ -47,9 +71,38 @@ namespace MasterPerform.Tests.Seeder
             {
                 var repository = scope.ServiceProvider.GetRequiredService<IEntityRepository<Document>>();
                 var tasks = documents.Select(async document =>
-                    await Task.Run(async () => await repository.AddAsync(document)));
+                    await Task.Run(async () =>
+                    {
+                        await repository.AddAsync(document);
+                        Commands.Add(MapToCommand(document));
+                    }));
                 await Task.WhenAll(tasks);
             }
+        }
+
+        private void SaveCommandsToJson(IReadOnlyCollection<CreateDocument> documents)
+        {
+            using (var file = File.CreateText("./test-data.json"))
+            {
+                var serializer = new JsonSerializer();
+                serializer.Serialize(file, documents);
+            }
+        }
+
+        private CreateDocument MapToCommand(Document document)
+        {
+            return new CreateDocument(
+                documentDetails: new Contracts.Entities.DocumentDetails(
+                    firstName: document.Details.FirstName,
+                    lastName: document.Details.LastName,
+                    email: document.Details.Email,
+                    phone: document.Details.Phone),
+                addresses: document.Addresses?.Select(z => new ContractAddress(
+                    addressLine: z?.AddressLine,
+                    city: z?.City,
+                    state: z?.State))?.ToList(),
+                findSimilar: true
+            );
         }
 
         private Faker<Document> GetFaker() 
