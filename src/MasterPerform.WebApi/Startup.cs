@@ -3,6 +3,7 @@ using MasterPerform.Infrastructure.Bootstrap;
 using MasterPerform.Infrastructure.Elasticsearch;
 using MasterPerform.Infrastructure.EnvironmentPrefixer;
 using MasterPerform.Infrastructure.Messaging;
+using MasterPerform.Infrastructure.Messaging.ServiceBus;
 using MasterPerform.Infrastructure.Swagger;
 using MasterPerform.Infrastructure.WebApi;
 using MasterPerform.Infrastructure.WebApi.Middlewares;
@@ -42,6 +43,8 @@ namespace MasterPerform.WebApi
                 .AddElasticSearchConnection(configuration: Configuration, defaultIndexName: MasterPerformBootstrap.IndexName)
                 .RegisterEnvironmnentPrefixer()
                 .RegisterEnvironmentSettings(Configuration)
+                .RegisterServiceBusSettings(Configuration)
+                .AddServiceBusSender()
                 .AddMicroserviceBootstrap<MasterPerformBootstrap>()
                 .AddContextAccessors()
                 .AddSwaggerWithDocumentationFromAssemblyContaining<CreateDocument>()

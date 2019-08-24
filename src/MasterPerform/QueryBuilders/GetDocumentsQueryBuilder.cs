@@ -9,11 +9,11 @@ namespace MasterPerform.QueryBuilders
 {
     internal class GetDocumentsQueryBuilder : IElasticsearchQueryBuilder<GetDocuments, Document>
     {
-        private readonly IFullTextSearchDescriptor<Document> descriptor;
+        private readonly IFullTextSearchDescriptor<Document> _descriptor;
 
         public GetDocumentsQueryBuilder(IFullTextSearchDescriptor<Document> descriptor)
         {
-            this.descriptor = descriptor;
+            this._descriptor = descriptor;
         }
 
         public SearchDescriptor<Document> BuildQuery(GetDocuments query)
@@ -30,7 +30,7 @@ namespace MasterPerform.QueryBuilders
                 {
                     var wordQueryContainer = new QueryContainer();
 
-                    foreach (var descriptorDefinition in descriptor.Definitions)
+                    foreach (var descriptorDefinition in _descriptor.Definitions)
                     {
                         wordQueryContainer |= descriptorDefinition(word);
                     }

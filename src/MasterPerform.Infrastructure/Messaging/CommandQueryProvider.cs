@@ -1,5 +1,6 @@
 ﻿using MasterPerform.Infrastructure.Messaging.Contracts;
 using MasterPerform.Infrastructure.Messaging.Handlers;
+using MasterPerform.Infrastructure.Messaging.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -18,10 +19,12 @@ namespace MasterPerform.Infrastructure.Messaging
     public class CommandQueryProvider : ICommandQueryProvider
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ServiceBusSender serviceBusSender;
 
-        public CommandQueryProvider(IServiceProvider serviceProvider)
+        public CommandQueryProvider(IServiceProvider serviceProvider, ServiceBusSender serviceBusSender)
         {
             this._serviceProvider = serviceProvider;
+            this.serviceBusSender = serviceBusSender;
         }
 
         public async Task SendAsync<TCommand>(TCommand command)
@@ -29,6 +32,7 @@ namespace MasterPerform.Infrastructure.Messaging
         {
             var commandHandler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
             await commandHandler.HandleAsync(command);
+            await serviceBusSender.SendMessage(command);
         }
 
         public async Task<TResponse> SendAsync<TQuery, TResponse>(TQuery query)
@@ -36,7 +40,9 @@ namespace MasterPerform.Infrastructure.Messaging
             where TResponse : class
         {
             var queryHandler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResponse>>();
-            return await queryHandler.HandleAsync(query);
+            var response = await queryHandler.HandleAsync(query);
+            await serviceBusSender.SendMessage(query);
+            return response;
         }
     }
 }
