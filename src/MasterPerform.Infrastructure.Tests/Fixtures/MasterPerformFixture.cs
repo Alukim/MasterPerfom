@@ -26,6 +26,7 @@ namespace MasterPerform.Tests.Fixtures
         public IElasticClient ElasticClient { get; }
 
         private bool SeedProd = false;
+        private bool RemoveDatabase = false;
         private string ProdUserName = "--";
         private string ProdPassword = "--";
 
@@ -62,7 +63,9 @@ namespace MasterPerform.Tests.Fixtures
 
         public void Dispose()
         {
-            RemoveIndexOfType<Document>();
+            if(RemoveDatabase)
+                RemoveIndexOfType<Document>();
+
             Client?.Dispose();
             testServer?.Dispose();
         }

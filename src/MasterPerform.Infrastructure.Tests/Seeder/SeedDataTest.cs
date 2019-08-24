@@ -36,8 +36,8 @@ namespace MasterPerform.Tests.Seeder
             DataToTest = new ConcurrentBag<CreateDocument>();
         }
 
-        // Seed 1000000 documents, 10 Tasks - save document, 1 task to generate next random data
-        [Fact(DisplayName = "Seed data", Skip = "Only for seed.")]
+        // Seed 1000000 documents, 10 Tasks - save document, 10 task to generate next random data
+        [Fact(DisplayName = "Seed data")]
         public async Task SeedData()
         {
             var tasks = new Task[20];
@@ -75,7 +75,7 @@ namespace MasterPerform.Tests.Seeder
 
         private void GenerateDataForTest()
         {
-            for (var i = 0; i < 30000; i += 100)
+            for (var i = 0; i < 300; ++i)
             {
                 var faker = GetFaker();
                 var documents = faker.GenerateBetween(100, 100).Select(MapToCommand);
@@ -108,7 +108,9 @@ namespace MasterPerform.Tests.Seeder
             var documentsToSerialize = documents.ToArray();
             var records = Enumerable.Range(1, documentsCount).ToList();
 
-            using(var writer = new StreamWriter(Path.Combine(desktopPath, testFolder, "index.csv")))
+            Directory.CreateDirectory(Path.Combine(desktopPath, testFolder));
+
+            using(var writer = File.CreateText(Path.Combine(desktopPath, testFolder, "index.csv")))
             using (var csv = new CsvWriter(writer))
             {
                 csv.WriteRecords(records);
