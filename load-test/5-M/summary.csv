@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+Master Perform - Thred Group:POST Document,26408,4547,206,21686,2550.04,0.000%,21.94413,6.28,11.60,293.0
+TOTAL,26408,4547,206,21686,2550.04,0.000%,21.94413,6.28,11.60,293.0

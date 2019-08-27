@@ -1,5 +1,6 @@
 ﻿using MasterPerform.Entities;
 using MasterPerform.Infrastructure.Elasticsearch;
+using MasterPerform.Infrastructure.Entities;
 using MasterPerform.Infrastructure.WebApi;
 using MasterPerform.Tests.Factories;
 using MasterPerform.WebApi;
@@ -10,7 +11,6 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using MasterPerform.Infrastructure.Entities;
 using Xunit;
 
 namespace MasterPerform.Tests.Fixtures
@@ -25,7 +25,7 @@ namespace MasterPerform.Tests.Fixtures
         public DocumentFactory DocumentFactory { get; }
         public IElasticClient ElasticClient { get; }
 
-        private bool SeedProd = false;
+        private bool SeedProd = true;
         private bool RemoveDatabase = false;
         private string ProdUserName = "--";
         private string ProdPassword = "--";
@@ -44,7 +44,6 @@ namespace MasterPerform.Tests.Fixtures
                     {
                         config.AddInMemoryCollection(new Dictionary<string, string>
                         {
-                            {"ElasticsearchSettings:NodeUrl", "http://13.74.64.52:9200"},
                             {"ElasticsearchSettings:Password", ProdPassword},
                             {"ElasticsearchSettings:Username", ProdUserName},
                             {"ElasticsearchSettings:ShardsNumber", "25"}

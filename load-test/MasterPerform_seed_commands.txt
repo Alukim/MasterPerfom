@@ -1,0 +1,30 @@
+PUT prod_1_m-master_perform/_settings
+{
+  "index": {
+    "refresh_interval": "-1",
+    "number_of_replicas": 0
+  }
+}
+
+reindex
+
+POST _reindex
+{
+  "source": {
+    "index": "integration-tests-20190824_204556-master_perform",
+    "size": 100
+  },
+  "dest": {
+    "index": "prod_1_m-master_perform"
+  }
+}
+
+reset settings
+
+PUT prod_1_m-master_perform/_settings
+{
+  "index": {
+    "refresh_interval": null,
+    "number_of_replicas": 1
+  }
+}
