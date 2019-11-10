@@ -10,9 +10,9 @@ namespace MasterPerform.WebApi.Utilities.Swagger
     {
         public Info SwaggerInfo => new Info
         {
-            Version = "v1-alpha-1.0.0",
+            Version = "v1",
             Title = "Master Perform API",
-            Description = "Simple API of Master Perform semestral project",
+            Description = "Simple API of Master of Science project",
             Contact = new Contact
             {
                 Name = "Bartosz Kowalski",

@@ -1,0 +1,401 @@
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "bool": {
+                        "should": [
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "details.firstName.exactMatch": {
+                                                "value": "Elvira"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "details.firstName.startsWith": {
+                                                "query": "Elvira"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "details.firstName": {
+                                                "query": "Elvira"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "details.lastName.exactMatch": {
+                                                "value": "Goodwin"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "details.lastName.startsWith": {
+                                                "query": "Goodwin"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "details.lastName": {
+                                                "query": "Goodwin"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "details.email.exactMatch": {
+                                                "value": "Elvira.Goodwin@gmail.com"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "details.email.startsWith": {
+                                                "query": "Elvira.Goodwin@gmail.com"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "details.email": {
+                                                "query": "Elvira.Goodwin@gmail.com"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "details.phone.exactMatch": {
+                                                "value": "770-883-7341 x57557"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "details.phone.startsWith": {
+                                                "query": "770-883-7341 x57557"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "details.phone": {
+                                                "query": "770-883-7341 x57557"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.addressLine.exactMatch": {
+                                                "value": "6648 Anderson Shore"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.addressLine.startsWith": {
+                                                "query": "6648 Anderson Shore"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.addressLine": {
+                                                "query": "6648 Anderson Shore"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.addressLine.exactMatch": {
+                                                "value": "0607 Lakin Forges"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.addressLine.startsWith": {
+                                                "query": "0607 Lakin Forges"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.addressLine": {
+                                                "query": "0607 Lakin Forges"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.city.exactMatch": {
+                                                "value": "Russelbury"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.city.startsWith": {
+                                                "query": "Russelbury"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.city": {
+                                                "query": "Russelbury"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.city.exactMatch": {
+                                                "value": "Kaelynville"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.city.startsWith": {
+                                                "query": "Kaelynville"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.city": {
+                                                "query": "Kaelynville"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.state.exactMatch": {
+                                                "value": "Nebraska"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.state.startsWith": {
+                                                "query": "Nebraska"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.state": {
+                                                "query": "Nebraska"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "term": {
+                                            "addresses.state.exactMatch": {
+                                                "value": "Wyoming"
+                                            }
+                                        }
+                                    },
+                                    "boost": 50.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match_phrase_prefix": {
+                                            "addresses.state.startsWith": {
+                                                "query": "Wyoming"
+                                            }
+                                        }
+                                    },
+                                    "boost": 30.0
+                                }
+                            },
+                            {
+                                "constant_score": {
+                                    "filter": {
+                                        "match": {
+                                            "addresses.state": {
+                                                "query": "Wyoming"
+                                            }
+                                        }
+                                    },
+                                    "boost": 20.0
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "bool": {
+                        "filter": [
+                            {
+                                "bool": {
+                                    "must_not": [
+                                        {
+                                            "term": {
+                                                "id": {
+                                                    "value": "3034e3e0-70f0-4b56-a8ff-83b928a0c65f"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "size": 10,
+    "sort": [
+        {
+            "_score": {
+                "order": "desc"
+            }
+        }
+    ]
+}

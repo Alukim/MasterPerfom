@@ -1,0 +1,273 @@
+{
+    "settings": {
+        "index": {
+            "max_ngram_diff": "100",
+            "number_of_shards": "5",
+            "provided_name": "dev-master_perform",
+            "creation_date": "1573410271287",
+            "analysis": {
+                "filter": {
+                    "alphanumeric_token": {
+                        "pattern": "([^a-zA-Z0-9])+",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    }
+                },
+                "char_filter": {
+                    "alphanumeric_char": {
+                        "pattern": "([^a-zA-Z0-9])+",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    }
+                },
+                "normalizer": {
+                    "alphanumeric_normalizer": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "type": "custom",
+                        "char_filter": [
+                            "alphanumeric_char"
+                        ]
+                    },
+                    "keyword_lowercase": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "type": "custom"
+                    }
+                },
+                "analyzer": {
+                    "alphanumeric": {
+                        "filter": [
+                            "alphanumeric_token",
+                            "lowercase"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "keyword"
+                    },
+                    "keyword_lowercase": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "keyword"
+                    },
+                    "ngram_analyzer": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "ngram"
+                    },
+                    "standard_lowercase": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "standard"
+                    },
+                    "keyword_lowercase_search": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "keyword"
+                    },
+                    "ngram_alphanumeric_analyzer": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                            "alphanumeric_char"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "ngram"
+                    }
+                },
+                "tokenizer": {
+                    "ngram": {
+                        "token_chars": [
+                            "letter",
+                            "digit",
+                            "punctuation",
+                            "symbol",
+                            "whitespace"
+                        ],
+                        "min_gram": "1",
+                        "type": "ngram",
+                        "max_gram": "30"
+                    }
+                }
+            },
+            "number_of_replicas": "1",
+            "uuid": "EBLDfpYRQ9S_79YGmQzUhw",
+            "version": {
+                "created": "7040299"
+            }
+        }
+    },
+    "mappings": {
+        "_doc": {
+            "properties": {
+                "addresses": {
+                    "type": "nested",
+                    "properties": {
+                        "city": {
+                            "search_analyzer": "keyword_lowercase_search",
+                            "fielddata": true,
+                            "analyzer": "ngram_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        },
+                        "state": {
+                            "search_analyzer": "keyword_lowercase_search",
+                            "fielddata": true,
+                            "analyzer": "ngram_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        },
+                        "addressLine": {
+                            "search_analyzer": "keyword_lowercase_search",
+                            "fielddata": true,
+                            "analyzer": "ngram_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        }
+                    }
+                },
+                "similarDocument": {
+                    "type": "keyword"
+                },
+                "details": {
+                    "properties": {
+                        "firstName": {
+                            "search_analyzer": "keyword_lowercase_search",
+                            "fielddata": true,
+                            "analyzer": "ngram_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        },
+                        "lastName": {
+                            "search_analyzer": "keyword_lowercase_search",
+                            "fielddata": true,
+                            "analyzer": "ngram_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "keyword_lowercase",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        },
+                        "phone": {
+                            "search_analyzer": "alphanumeric",
+                            "fielddata": true,
+                            "analyzer": "ngram_alphanumeric_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "alphanumeric_normalizer",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "alphanumeric",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        },
+                        "email": {
+                            "search_analyzer": "alphanumeric",
+                            "fielddata": true,
+                            "analyzer": "ngram_alphanumeric_analyzer",
+                            "store": true,
+                            "type": "text",
+                            "fields": {
+                                "exactMatch": {
+                                    "normalizer": "alphanumeric_normalizer",
+                                    "store": true,
+                                    "type": "keyword"
+                                },
+                                "startsWith": {
+                                    "fielddata": true,
+                                    "analyzer": "alphanumeric",
+                                    "store": true,
+                                    "type": "text"
+                                }
+                            }
+                        }
+                    }
+                },
+                "id": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
